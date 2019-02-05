@@ -134,11 +134,6 @@ echo -e "\n"
 echo -e "[Instalation finished.]\n"
 sleep 2
 
-#start background player
-echo -e "[Starting RetroPie_BGM_Player...]\n"
-sudo pkill mpg123 >/dev/null 2>&1
-sudo -u pi bash '/opt/retropie/configs/all/retropie_bgm_player/bgm_init.sh'
-
 #show some info
 echo -e "[INFO]"
 echo -e "You can now change background music volume and enbale/disable it from RetroPie menu."
@@ -146,10 +141,9 @@ echo -e "You will find there an option called Background Music Settings. All cha
 echo -e "To add new music or delete the installed ones, use the folder music installed on roms folder. ( /roms/music/ )."
 echo -e "The player only reads mp3 files.\n"
 
-#restart ES
+#restart system
 echo -e "[Restart EmulationStation]"
 echo -e "-To finish, we need to restart EmulationStation.\n"
 read -n 1 -s -r -p "Press any key to Restart."
-$(sudo killall emulationstation >/dev/null 2>&1 ; sleep 2; sudo -u pi emulationstation)&
 sudo shred -u ${installscript} >/dev/null 2>&1
-clear
+sudo reboot
