@@ -2,7 +2,7 @@
 #####################################################################
 #Project		:	RetroPie_BGM_Player
 #Script Name	:	install.sh
-#Version		:	1.0
+#Version		:	1.1
 #Date			:	20190205	(YYYYMMDD)
 #Description	:	This script installs  RetroPie_BGM_Player,
 #				:	that adds support for background music on
@@ -70,7 +70,7 @@ echo -e "-Creating folders..."
 sudo mkdir -p -m 777 /opt/retropie/configs/all/retropie_bgm_player
 sleep 2
 echo -e "-Downloading files...\n"
-sudo wget -N https://raw.githubusercontent.com/Naprosnia/RetroPie_BGM_Player/master/retropie_bgm_player/Background%20Music%20Settings.sh -P ~/RetroPie/retropiemenu/
+sudo wget -N https://raw.githubusercontent.com/Naprosnia/RetroPie_BGM_Player/master/retropie_bgm_player/Background%20Music%20Settings.sh -P /home/pi/RetroPie/retropiemenu/
 sudo wget -N https://raw.githubusercontent.com/Naprosnia/RetroPie_BGM_Player/master/retropie_bgm_player/bgm_init.sh -P /opt/retropie/configs/all/retropie_bgm_player/
 sudo wget -N https://raw.githubusercontent.com/Naprosnia/RetroPie_BGM_Player/master/retropie_bgm_player/bgm_play.sh -P /opt/retropie/configs/all/retropie_bgm_player/
 sudo wget -N https://raw.githubusercontent.com/Naprosnia/RetroPie_BGM_Player/master/retropie_bgm_player/bgm_stop.sh -P /opt/retropie/configs/all/retropie_bgm_player/
@@ -78,7 +78,7 @@ sudo wget -N https://raw.githubusercontent.com/Naprosnia/RetroPie_BGM_Player/mas
 sudo wget -N https://raw.githubusercontent.com/Naprosnia/RetroPie_BGM_Player/master/retropie_bgm_player/togglebgm.sh -P /opt/retropie/configs/all/retropie_bgm_player/
 echo -e "\n-Setting permissions...\n"
 sleep 2
-sudo chmod 777 ~/RetroPie/retropiemenu/Background\ Music\ Settings.sh
+sudo chmod 777 /home/pi/RetroPie/retropiemenu/Background\ Music\ Settings.sh
 sudo chmod 777 /opt/retropie/configs/all/retropie_bgm_player/*.*
 
 ##installing
@@ -125,15 +125,15 @@ sudo sed -i "1 i bash '/opt/retropie/configs/all/retropie_bgm_player/bgm_init.sh
 #prepare music folder
 echo -e "-Setting up music folder..."
 sleep 2
-sudo mkdir -p -m 777 ~/RetroPie/roms/music
+sudo mkdir -p -m 777 /home/pi/RetroPie/roms/music
 echo -e "--Downloading some music files...\n"
-sudo wget -N https://github.com/Naprosnia/RetroPie_BGM_Player/raw/master/music/1.mp3 -P ~/RetroPie/roms/music/
-sudo wget -N https://github.com/Naprosnia/RetroPie_BGM_Player/raw/master/music/2.mp3 -P ~/RetroPie/roms/music/
-sudo wget -N https://github.com/Naprosnia/RetroPie_BGM_Player/raw/master/music/3.mp3 -P ~/RetroPie/roms/music/
-sudo wget -N https://github.com/Naprosnia/RetroPie_BGM_Player/raw/master/music/4.mp3 -P ~/RetroPie/roms/music/
-sudo wget -N https://github.com/Naprosnia/RetroPie_BGM_Player/raw/master/music/5.mp3 -P ~/RetroPie/roms/music/
-sudo wget -N https://github.com/Naprosnia/RetroPie_BGM_Player/raw/master/music/6.mp3 -P ~/RetroPie/roms/music/
-sudo chmod 777 ~/RetroPie/roms/music/*.*
+sudo wget -N https://github.com/Naprosnia/RetroPie_BGM_Player/raw/master/music/1.mp3 -P /home/pi/RetroPie/roms/music/
+sudo wget -N https://github.com/Naprosnia/RetroPie_BGM_Player/raw/master/music/2.mp3 -P /home/pi/RetroPie/roms/music/
+sudo wget -N https://github.com/Naprosnia/RetroPie_BGM_Player/raw/master/music/3.mp3 -P /home/pi/RetroPie/roms/music/
+sudo wget -N https://github.com/Naprosnia/RetroPie_BGM_Player/raw/master/music/4.mp3 -P /home/pi/RetroPie/roms/music/
+sudo wget -N https://github.com/Naprosnia/RetroPie_BGM_Player/raw/master/music/5.mp3 -P /home/pi/RetroPie/roms/music/
+sudo wget -N https://github.com/Naprosnia/RetroPie_BGM_Player/raw/master/music/6.mp3 -P /home/pi/RetroPie/roms/music/
+sudo chmod 777 /home/pi/RetroPie/roms/music/*.*
 echo -e "\n"
 
 echo -e "[Instalation finished.]\n"
@@ -141,6 +141,7 @@ sleep 2
 
 #start background player
 echo -e "[Starting RetroPie_BGM_Player...]\n"
+sudo pkill mpg123
 bash '/opt/retropie/configs/all/retropie_bgm_player/bgm_init.sh'
 
 #show some info
