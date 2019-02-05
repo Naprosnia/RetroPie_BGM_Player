@@ -18,11 +18,6 @@ echo -e "#  Installing RetroPie_BGM_Player  #"
 echo -e "####################################\n"
 
 installscript="$0"
-function finish {
-	$(sudo killall emulationstation >/dev/null 2>&1 ; sleep 2; sudo -u pi emulationstation)&
-    sudo shred -u ${installscript} >/dev/null 2>&1
-	clear
-}
 
 ##check mpg123 player installation
 player=mpg123
@@ -141,8 +136,8 @@ sleep 2
 
 #start background player
 echo -e "[Starting RetroPie_BGM_Player...]\n"
-sudo pkill mpg123
-bash '/opt/retropie/configs/all/retropie_bgm_player/bgm_init.sh'
+sudo pkill mpg123 >/dev/null 2>&1
+sudo -u pi bash '/opt/retropie/configs/all/retropie_bgm_player/bgm_init.sh'
 
 #show some info
 echo -e "[INFO]"
@@ -155,4 +150,6 @@ echo -e "The player only reads mp3 files.\n"
 echo -e "[Restart EmulationStation]"
 echo -e "-To finish, we need to restart EmulationStation.\n"
 read -n 1 -s -r -p "Press any key to Restart."
-trap finish EXIT
+$(sudo killall emulationstation >/dev/null 2>&1 ; sleep 2; sudo -u pi emulationstation)&
+sudo shred -u ${installscript} >/dev/null 2>&1
+clear
