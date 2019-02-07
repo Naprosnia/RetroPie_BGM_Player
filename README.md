@@ -2,6 +2,7 @@
 A simple background music player to implement on RetroPie and Emulation Station based on [this](https://retropie.org.uk/forum/topic/9133/quick-and-easy-guide-for-adding-music-to-emulatonstation-on-retropie-noob-friendly) guide from RetroPie forum.
 
 I made it simpler to install and created an options menu that can be launched from RetroPie menu, where you can change music volume and toggle music (on or off).
+Music stop when you play any emulator, and play again when you leave it back to Emulation Station.
 
 Hope you enjoy it.
 
