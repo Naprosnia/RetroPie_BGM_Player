@@ -2,7 +2,7 @@
 #####################################################################
 #Project		:	RetroPie_BGM_Player
 #Script Name	:	install.sh
-#Version		:	1.1
+#Version		:	1.5
 #Date			:	20190205	(YYYYMMDD)
 #Description	:	This script installs  RetroPie_BGM_Player,
 #				:	that adds support for background music on
