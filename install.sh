@@ -21,9 +21,9 @@ installscript="$0"
 
 ##check mpg123 player installation
 player=mpg123
-player_status=$(dpkg-query -W --showformat='${Status}\n' $player  2> /dev/null|grep "install ok installed")
 
 function check_install(){
+	player_status=$(dpkg-query -W --showformat='${Status}\n' $player  2> /dev/null|grep "install ok installed")
 	if [ "" == "$player_status" ]; then
 		return 0
 	else
@@ -45,12 +45,13 @@ if check_install; then
 	
 	if check_install; then
 		echo -e "----Player not installed correctly. Aborting script...\n\n"
-		sleep 3
+		sleep 2
+		sudo shred -u ${installscript} >/dev/null 2>&1
 		exit
-	fi
-	
-	echo -e "----Player installed successfully, proceeding with the installation...\n"
-	sleep 2
+	else
+		echo -e "----Player installed successfully, proceeding with the installation...\n"
+		sleep 2
+	fi	
 	
 else
 	echo -e "-Player already installed, proceeding with the installation...\n"
