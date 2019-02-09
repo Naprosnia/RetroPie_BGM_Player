@@ -146,5 +146,4 @@ echo -e "The player only reads mp3 files.\n"
 echo -e "[Restart EmulationStation]"
 echo -e "-To finish, we need to restart EmulationStation.\n"
 read -n 1 -s -r -p "Press any key to Restart."
-sudo shred -u ${installscript} >/dev/null 2>&1
-sudo reboot
+sudo shred -u ${installscript} >/dev/null 2>&1; sudo reboot
