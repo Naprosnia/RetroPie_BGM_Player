@@ -17,7 +17,7 @@ After the installation and the restart, music start playing when Emulation Stati
 * You don't like my music?! Easy for you, simply go to your roms folder, and inside you will find a new folder called "music", you can put there the musics you want. Attention, the audio files should be in .mp3 !
 
 ## Video
-[![RetroPie BGM Player](http://img.youtube.com/vi/HFwzHAtcWNU/2.jpg)](http://www.youtube.com/watch?v=HFwzHAtcWNU)
+[![RetroPie BGM Player](https://img.youtube.com/vi/HFwzHAtcWNU/0.jpg)](https://www.youtube.com/watch?v=HFwzHAtcWNU)
 
 ## Donate
 You want to buy me a burger? Click the button below.
