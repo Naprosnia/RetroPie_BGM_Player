@@ -88,8 +88,8 @@ sleep 1
 ########################
 echo -e "[Restart System]"
 echo -e "-To finish, we need to reboot.\n"
-read -n 1 -s -r -p "Press any key to Restart.\n"
+read -n 1 -s -r -p "Press any key to Restart."
 sudo shred -u ${uninstallscript} >/dev/null 2>&1
-#sudo reboot
+sudo reboot
 ########################
 ########################
