@@ -7,9 +7,9 @@ Music stop when you play any emulator, and play again when you leave it back to 
 Hope you enjoy it.
 
 ## Installation
-1. `sudo wget -N https://raw.githubusercontent.com/Naprosnia/RetroPie_BGM_Player/master/install.sh`
-2. `sudo chmod 777 install.sh`
-3. `sudo bash install.sh`
+1. `wget -N https://raw.githubusercontent.com/Naprosnia/RetroPie_BGM_Player/master/install.sh`
+2. `chmod +x install.sh`
+3. `bash install.sh`
 
 ## Usage
 After the installation and the restart, music start playing when Emulation Station launches. During the installation, 6 musics are downloaded for you.
