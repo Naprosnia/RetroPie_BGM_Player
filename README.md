@@ -13,7 +13,9 @@ Hope you enjoy it.
 
 ## Usage
 After the installation and the restart, music start playing when Emulation Station launches. During the installation, 6 musics are downloaded for you.
-* To change music volume or enable/disable it, go to `Background Music Settings` on RetroPie settings menu.
+* ES settings `OTHER SETTINGS / PARSE GAMELISTS ONLY` should be `OFF`, otherwise you cant see options menu.
+* To change settings, go to `RetroPie-BGM-Player` on RetroPie settings menu.
+* Fade effect is disabled by default, to to settings menu to enable it.
 * You don't like my music?! Easy for you, simply go to your roms folder, and inside you will find a new folder called "music", you can put there the musics you want. Attention, the audio files should be in .mp3 !
 
 ## Video
