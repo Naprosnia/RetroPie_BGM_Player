@@ -102,10 +102,10 @@ function bgm_init(){
 	setsid $MUSICPLAYER -f $bgm_volume -Z $BGMMUSICS/*.mp3 >/dev/null 2>&1 &
 	
 	# check bgm_toggle, if 1 = play, else = stop
-	if [ $bgm_toggle == 1 ]; then
+	if [ "$bgm_toggle" -eq "1" ]; then
 	
 		# check bgm_fade, if 1 apply fade, else leave it
-		if [ $bgm_fade == 1 ]; then
+		if [ "$bgm_fade" -eq "1" ]; then
 			vol_fade_in
 		fi
 		
