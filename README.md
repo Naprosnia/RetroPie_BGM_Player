@@ -19,7 +19,7 @@ After the installation and the restart, music start playing when Emulation Stati
 * You don't like my music?! Easy for you, simply go to your roms folder, and inside you will find a new folder called "music", you can put there the musics you want. Attention, the audio files should be in .mp3 !
 
 ## Video
-[![RetroPie BGM Player](https://img.youtube.com/vi/HFwzHAtcWNU/0.jpg)](https://www.youtube.com/watch?v=HFwzHAtcWNU)
+[![RetroPie BGM Player](https://img.youtube.com/vi/5G6uRU2iSRA/0.jpg)](https://www.youtube.com/watch?v=5G6uRU2iSRA)
 
 ## Uninstall
 1. `wget -N https://raw.githubusercontent.com/Naprosnia/RetroPie_BGM_Player/master/uninstall.sh`
