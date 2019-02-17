@@ -30,7 +30,6 @@ BGM=$HOME"/RetroPie-BGM-Player"
 BGMCONTROL=$BGM"/bgm_control"
 BGMMUSICS=$RP"/roms/music"
 BGMOLD=$RPCONFIGS"/retropie_bgm_player"
-uninstallscript="$0"
 MUSICPLAYER="mpg123"
 
 ########################
@@ -90,6 +89,6 @@ echo -e "[Restart System]"
 echo -e "-To finish, we need to reboot.\n"
 read -n 1 -s -r -p "Press any key to Restart."
 echo -e "\n"
-(rm -f ${uninstallscript}; sudo reboot)
+(shred -u $0; sudo reboot)
 ########################
 ########################
