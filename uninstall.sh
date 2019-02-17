@@ -37,7 +37,7 @@ MUSICPLAYER="mpg123"
 ##    kill player     ##
 ########################
 echo -e "[Stopping Player]"
-killall $MUSICPLAYER
+killall $MUSICPLAYER >/dev/null 2>&1
 sleep 1
 ########################
 ########################
@@ -74,7 +74,7 @@ rm -rf $BGMMUSICS
 ########################
 ##  mpg123 uninstall  ##
 ########################
-echo -e "[Remove Music Player]"
+echo -e "[Remove Music Player]\n"
 sleep 1
 sudo apt-get --purge remove -y $MUSICPLAYER
 
@@ -89,7 +89,7 @@ sleep 1
 echo -e "[Restart System]"
 echo -e "-To finish, we need to reboot.\n"
 read -n 1 -s -r -p "Press any key to Restart."
-shred -u ${uninstallscript} >/dev/null 2>&1
-sudo reboot
+echo -e "\n"
+(shred -u ${uninstallscript}; sudo reboot)
 ########################
 ########################
