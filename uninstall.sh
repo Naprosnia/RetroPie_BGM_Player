@@ -89,6 +89,6 @@ echo -e "[Restart System]"
 echo -e "-To finish, we need to reboot.\n"
 read -n 1 -s -r -p "Press any key to Restart."
 echo -e "\n"
-(shred -u $0; sudo reboot)
+(rm -f $0; sudo reboot)
 ########################
 ########################
