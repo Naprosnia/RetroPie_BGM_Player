@@ -71,20 +71,6 @@ FADEVOLUME=
 VOLUMESTEP=
 
 # settings area
-# import settings file (or create one if not exist [with defaults])
-if [ ! -e $BGMSETTINGS ]; then
-
-	# set default settings and variables
-	#bgm_volume=16384
-	echo "bgm_volume=16384" >> $BGMSETTINGS
-	#bgm_toggle=1
-	echo "bgm_toggle=1" >> $BGMSETTINGS
-	#bgm_fade=0
-	echo "bgm_fade=0" >> $BGMSETTINGS
-	#bgm_ingame=0
-	echo "bgm_ingame=0" >> $BGMSETTINGS
-	
-fi
 source $BGMSETTINGS >/dev/null 2>&1
 # end of settings area
 
