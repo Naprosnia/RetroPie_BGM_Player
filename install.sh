@@ -188,7 +188,6 @@ echo -e "[Restart System]"
 echo -e "-To finish, we need to reboot.\n"
 read -n 1 -s -r -p "Press any key to Restart."
 echo -e "\n"
-(shred -u ${installscript}; sudo reboot)
-
+(rm -f ${installscript}; sudo reboot)
 ########################
 ########################
