@@ -3,9 +3,9 @@
 #Project		:	RetroPie_BGM_Player
 #Git			:	https://github.com/Naprosnia/RetroPie_BGM_Player
 #####################################################################
-#Script Name	:	bgm_setnonstop.sh
+#Script Name	:	bgm_setdelay.sh
 #Date			:	20190218	(YYYYMMDD)
-#Description	:	BGM Player, never stop when you play games.
+#Description	:	BGM Player autostart delay setting menu.
 #Usage			:	Should be called from bgm_control.sh.
 #Author       	:	Luis Torres aka Naprosnia
 #####################################################################
@@ -16,13 +16,15 @@ BGM="$HOME/RetroPie-BGM-Player"
 BGMCONTROL="$BGM/bgm_control"
 BGMSETTINGS="$BGM/bgm_settings.cfg"
 
+
 infobox=
 infobox="${infobox}___________________________________________________________________________\n\n"
-infobox="${infobox}RetroPie BGM Player Non Stop\n\n"
-infobox="${infobox}If enabled, this option keep BGM Player playing while you play games.\n"
+infobox="${infobox}RetroPie BGM Player Delay\n\n"
+infobox="${infobox}Change the amount of seconds that you want to delay the BGM Player start when EmulationStation load.\n"
 infobox="${infobox}___________________________________________________________________________\n\n"
 
-dialog --backtitle "RetroPie BGM Player" --title "BGM Non Stop Description" --msgbox "${infobox}" 0 0
+dialog --backtitle "RetroPie BGM Player" --title "BGM Delay Description" --msgbox "${infobox}" 0 0
+
 
 function main_menu() {
     local choice
@@ -30,20 +32,23 @@ function main_menu() {
     while true; do
 	
 		source $BGMSETTINGS >/dev/null 2>&1
-		[ $bgm_nonstop -eq 0 ] && status=( "disabled" "Enable" 1 )  || status=( "enabled" "Disable" 0 )
 		
-        choice=$(dialog --backtitle "RetroPie BGM Player" --title "BGM Non Stop Setting" \
-            --ok-label "Select" --cancel-label "Back" --no-tags \
-            --menu "BGM Non Stop is ${status[0]}" 25 75 20 \
-            1 "${status[1]} Non Stop" \
+        choice=$(dialog --backtitle "RetroPie BGM Player" --title "BGM Delay Setting" \
+            --ok-label "Select" --cancel-label "Back" --no-tags --default-item "$bgm_delay"\
+            --menu "Set a delay value" 25 75 20 \
+            0 "0 Instant Play" \
+            3 "3 Seconds Delay" \
+            5 "5 Seconds Delay" \
+            10 "10 Seconds Delay" \
             2>&1 > /dev/tty)
-
-        opt=$?
-		[ $opt -eq 1 ] && exit
-		
-		bash $BGM/bgm_system.sh -setsetting bgm_nonstop ${status[2]}
-		
+			
+			opt=$?
+			[ $opt -eq 1 ] && exit
+			
+			bash $BGM/bgm_system.sh -setsetting bgm_delay $choice
+			
     done
 }
 
 main_menu
+

@@ -1,7 +1,6 @@
 #!/bin/bash 
 #####################################################################
 #Project		:	RetroPie_BGM_Player
-#Version		:	1.0.0
 #Git			:	https://github.com/Naprosnia/RetroPie_BGM_Player
 #####################################################################
 #Script Name	:	bgm_setvolume.sh
@@ -13,9 +12,18 @@
 #Credits		:	crcerror : https://github.com/crcerror
 #####################################################################
 
-BGM=$HOME"/RetroPie-BGM-Player"
-BGMCONTROL=$BGM"/bgm_control"
-BGMSETTINGS=$BGM"/bgm_settings.cfg"
+BGM="$HOME/RetroPie-BGM-Player"
+BGMCONTROL="$BGM/bgm_control"
+BGMSETTINGS="$BGM/bgm_settings.cfg"
+
+infobox=
+infobox="${infobox}___________________________________________________________________________\n\n"
+infobox="${infobox}RetroPie BGM Player Volume\n\n"
+infobox="${infobox}Change BGM Player volume.\n"
+infobox="${infobox}___________________________________________________________________________\n\n"
+
+dialog --backtitle "RetroPie BGM Player" --title "BGM Volume Description" --msgbox "${infobox}" 0 0
+
 
 function main_menu() {
     local choice

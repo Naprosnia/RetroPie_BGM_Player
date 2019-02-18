@@ -1,11 +1,10 @@
 #!/bin/bash 
 #####################################################################
 #Project		:	RetroPie_BGM_Player
-#Version		:	1.0.0
 #Git			:	https://github.com/Naprosnia/RetroPie_BGM_Player
 #####################################################################
 #Script Name	:	bgm_setfade.sh
-#Date			:	20190216	(YYYYMMDD)
+#Date			:	20190218	(YYYYMMDD)
 #Description	:	BGM Player fade effect menu.
 #Usage			:	Should be called from bgm_control.sh.
 #Author       	:	Luis Torres aka Naprosnia
@@ -13,25 +12,22 @@
 #Credits		:	crcerror : https://github.com/crcerror
 #####################################################################
 
-BGM=$HOME"/RetroPie-BGM-Player"
-BGMCONTROL=$BGM"/bgm_control"
-BGMSETTINGS=$BGM"/bgm_settings.cfg"
+BGM="$HOME/RetroPie-BGM-Player"
+BGMCONTROL="$BGM/bgm_control"
+BGMSETTINGS="$BGM/bgm_settings.cfg"
 
 infobox=
 infobox="${infobox}___________________________________________________________________________\n\n"
 infobox="${infobox}RetroPie BGM Player Fade Effect\n\n"
-infobox="${infobox}Fade effect is highly experimental.\n\n"
-infobox="${infobox}If you encounter any error or malfunction related to audio volume, or even if this option does not work for you, disable it.\n"
-infobox="${infobox}If you use other audio channels other than PCM (default), this option will certainly not work.\n"
-infobox="${infobox}\n"
-infobox="${infobox}Any issue with this effect, please report to https://github.com/Naprosnia/RetroPie_BGM_Player/.\n"
-infobox="${infobox}\n\n"
-infobox="${infobox}A special thanks to crcerror / cyperghost, for developing the base script for the fade effect. https://github.com/crcerror\n"
-infobox="${infobox}\n"
+infobox="${infobox}This option enables the fading effect when music start or stop playing.\n\n"
+infobox="${infobox}Fade effect is highly experimental.\n"
+infobox="${infobox}If you encounter any error or malfunction related to audio volume, or even\n if this option does not work for you, disable it.\n"
+infobox="${infobox}If you use other audio channels other than PCM (default), this option will\n certainly not work.\n"
+infobox="${infobox}Any issue with this effect, please report to\n https://github.com/Naprosnia/RetroPie_BGM_Player/.\n\n"
+infobox="${infobox}A special thanks to crcerror / cyperghost, for developing the base script\n for the fade effect. https://github.com/crcerror\n"
 infobox="${infobox}___________________________________________________________________________\n\n"
 
-dialog --backtitle "RetroPie BGM Player" --title "BGM Fade Effect Alert" --msgbox "${infobox}" 23 80
-
+dialog --backtitle "RetroPie BGM Player" --title "BGM Fade Effect Alert" --msgbox "${infobox}" 0 0
 
 function main_menu() {
     local choice
