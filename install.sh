@@ -5,7 +5,7 @@
 #Git			:	https://github.com/Naprosnia/RetroPie_BGM_Player
 #####################################################################
 #Script Name	:	install.sh
-#Date			:	20190216	(YYYYMMDD)
+#Date			:	20190218	(YYYYMMDD)
 #Description	:	The installation script.
 #Usage			:	wget -N https://raw.githubusercontent.com/Naprosnia/RetroPie_BGM_Player/master/install.sh
 #				:	chmod +x install.sh
@@ -22,14 +22,14 @@ echo -e "####################################\n"
 
 
 
-RP=$HOME"/RetroPie"
-RPMENU=$RP"/retropiemenu"
-RPSETUP=$HOME"/RetroPie-Setup"
+RP="$HOME/RetroPie"
+RPMENU="$RP/retropiemenu"
+RPSETUP="$HOME/RetroPie-Setup"
 RPCONFIGS="/opt/retropie/configs/all"
-BGM=$HOME"/RetroPie-BGM-Player"
-BGMCONTROL=$BGM"/bgm_control"
-BGMMUSICS=$RP"/roms/music"
-BGMOLD=$RPCONFIGS"/retropie_bgm_player"
+BGM="$HOME/RetroPie-BGM-Player"
+BGMCONTROL="$BGM/bgm_control"
+BGMMUSICS="$RP/roms/music"
+BGMOLD="$RPCONFIGS/retropie_bgm_player"
 
 ########################
 ##remove older version##
@@ -129,7 +129,7 @@ cd $BGM
 BGMFILES=("bgm_system.sh" "bgm_control.sh" "bgm_settings.cfg")
 gitdownloader ${BGMFILES[@]} "/RetroPie-BGM-Player"
 cd $BGMCONTROL
-BGMFILES=("bgm_setvolume.sh" "bgm_settoggle.sh" "bgm_setfade.sh" "bgm_setingame.sh")
+BGMFILES=("bgm_setvolume.sh" "bgm_settoggle.sh" "bgm_setfade.sh" "bgm_setnonstop.sh" "bgm_setdelay.sh")
 gitdownloader ${BGMFILES[@]} "/RetroPie-BGM-Player/bgm_control"
 cd $RPMENU
 BGMFILES=("RetroPie-BGM-Player.sh")

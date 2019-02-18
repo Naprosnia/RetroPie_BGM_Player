@@ -1,11 +1,10 @@
 #!/bin/bash 
 #####################################################################
 #Project		:	RetroPie_BGM_Player
-#Version		:	1.0.0
 #Git			:	https://github.com/Naprosnia/RetroPie_BGM_Player
 #####################################################################
 #Script Name	:	uninstall.sh
-#Date			:	20190216	(YYYYMMDD)
+#Date			:	20190218	(YYYYMMDD)
 #Description	:	The removal script.
 #Usage			:	wget -N https://raw.githubusercontent.com/Naprosnia/RetroPie_BGM_Player/master/uninstall.sh
 #				:	chmod +x uninstall.sh
@@ -22,14 +21,14 @@ echo -e "####################################\n"
 
 
 
-RP=$HOME"/RetroPie"
-RPMENU=$RP"/retropiemenu"
-RPSETUP=$HOME"/RetroPie-Setup"
+RP="$HOME/RetroPie"
+RPMENU="$RP/retropiemenu"
+RPSETUP="$HOME/RetroPie-Setup"
 RPCONFIGS="/opt/retropie/configs/all"
-BGM=$HOME"/RetroPie-BGM-Player"
-BGMCONTROL=$BGM"/bgm_control"
-BGMMUSICS=$RP"/roms/music"
-BGMOLD=$RPCONFIGS"/retropie_bgm_player"
+BGM="$HOME/RetroPie-BGM-Player"
+BGMCONTROL="$BGM/bgm_control"
+BGMMUSICS="$RP/roms/music"
+BGMOLD="$RPCONFIGS/retropie_bgm_player"
 MUSICPLAYER="mpg123"
 
 ########################
