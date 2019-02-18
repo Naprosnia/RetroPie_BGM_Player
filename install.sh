@@ -182,11 +182,10 @@ sleep 1
 ########################
 ##       Restart      ##
 ########################
-
 echo -e "[Restart System]"
 echo -e "-To finish, we need to reboot.\n"
 read -n 1 -s -r -p "Press any key to Restart."
 echo -e "\n"
-(rm -f $0; sudo reboot)
+(rm -f realpath $0; sudo reboot)
 ########################
 ########################
