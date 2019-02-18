@@ -36,7 +36,7 @@ function main_menu() {
         choice=$(dialog --backtitle "RetroPie BGM Player" --title "BGM Delay Setting" \
             --ok-label "Select" --cancel-label "Back" --no-tags --default-item "$bgm_delay"\
             --menu "Delay set to $bgm_delay seconds" 25 75 20 \
-            0 "0 Instant Play" \
+            0 "Instant Play" \
             3 "3 Seconds Delay" \
             5 "5 Seconds Delay" \
             10 "10 Seconds Delay" \
