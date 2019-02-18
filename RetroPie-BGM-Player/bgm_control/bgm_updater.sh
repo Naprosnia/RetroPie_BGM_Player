@@ -117,9 +117,11 @@ testvercomp () {
     esac
     if [[ $op != $3 ]]
     then
-        echo "FAIL: Expected '$3', Actual '$op', Arg1 '$1', Arg2 '$2'"
+        #echo "FAIL: Expected '$3', Actual '$op', Arg1 '$1', Arg2 '$2'"
+		return 0
     else
-        echo "Pass: '$1 $op $2'"
+        #echo "Pass: '$1 $op $2'"
+		return 1
     fi
 }
 
