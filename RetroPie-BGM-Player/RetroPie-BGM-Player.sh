@@ -1,11 +1,10 @@
 #!/bin/bash 
 #####################################################################
 #Project		:	RetroPie_BGM_Player
-#Version		:	1.0.0
 #Git			:	https://github.com/Naprosnia/RetroPie_BGM_Player
 #####################################################################
-#Script Name	:	RetroPie\ BGM\ Player.sh
-#Date			:	20190216	(YYYYMMDD)
+#Script Name	:	RetroPie-BGM-Player.sh
+#Date			:	20190218	(YYYYMMDD)
 #Description	:	Main Menu launcher.
 #Usage			:	Should be placed inside RetroPie/retropiemenu/.
 #Requirement	:	User should disable the option from ES Menu
@@ -16,5 +15,5 @@
 #Credits		:	crcerror : https://github.com/crcerror
 #####################################################################
 
-BGM=$HOME"/RetroPie-BGM-Player"
+BGM="$HOME/RetroPie-BGM-Player"
 bash $BGM/bgm_control.sh

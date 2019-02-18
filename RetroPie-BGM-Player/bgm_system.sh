@@ -1,11 +1,10 @@
 #!/bin/bash 
 #####################################################################
 #Project		:	RetroPie_BGM_Player
-#Version		:	1.0.0
 #Git			:	https://github.com/Naprosnia/RetroPie_BGM_Player
 #####################################################################
 #Script Name	:	bgm_system.sh
-#Date			:	20190216	(YYYYMMDD)
+#Date			:	20190218	(YYYYMMDD)
 #Description	:	This script contain all functions needed by BGM.
 #Usage			:	It should be called from other scripts using arguments.
 #Author       	:	Luis Torres aka Naprosnia
@@ -49,14 +48,14 @@ function execute() {
 }
 
 # shorten paths
-RP=$HOME"/RetroPie"
-RPMENU=$RP"/retropiemenu"
-RPSETUP=$HOME"/RetroPie-Setup"
+RP="$HOME/RetroPie"
+RPMENU="$RP/retropiemenu"
+RPSETUP="$HOME/RetroPie-Setup"
 RPCONFIGS="/opt/retropie/configs/all"
-BGM=$HOME"/RetroPie-BGM-Player"
-BGMCONTROL=$BGM"/bgm_control"
-BGMSETTINGS=$BGM"/bgm_settings.cfg"
-BGMMUSICS=$RP"/roms/music"
+BGM="$HOME/RetroPie-BGM-Player"
+BGMCONTROL="$BGM/bgm_control"
+BGMSETTINGS="$BGM/bgm_settings.cfg"
+BGMMUSICS="$RP/roms/music"
 
 # ALSA related vars
 readonly CHANNEL="PCM"
@@ -79,10 +78,10 @@ function bgm_init(){
 	# if script called from autostart.sh, wait for omxplayer (splashscreen) to end
 	if [ "$1" == "--autostart" ]; then
 		while pgrep omxplayer >/dev/null; do sleep 1; done
-		sleep 1
+		sleep $bgm_delay
 	fi
 	
-	(pgrep -x "mpg123" > /dev/null) && bgm_kill
+	(pgrep -x $MUSICPLAYER > /dev/null) && bgm_kill
 	
 	# start player (always)
 	setsid $MUSICPLAYER -f $bgm_volume -Z $BGMMUSICS/*.mp3 >/dev/null 2>&1 &
@@ -107,8 +106,8 @@ function bgm_play(){
 
 	# check bgm_toggle, if 1 = play, else = null
 	if [ "$bgm_toggle" -eq "1" ]; then
-		# check bgm_ingame, if 0 = stop, else = null
-		if [ "$bgm_ingame" -eq "0" ]; then
+		# check bgm_nonstop, if 0 = stop, else = null
+		if [ "$bgm_nonstop" -eq "0" ]; then
 			# check bgm_fade, if 1 apply fade, else leave it
 			if [ "$bgm_fade" -eq "1" ]; then
 				vol_fade_in
@@ -124,8 +123,8 @@ function bgm_stop(){
 
 	# check bgm_toggle, if 1 = stop, else = null
 	if [ "$bgm_toggle" -eq "1" ]; then
-		# check bgm_ingame, if 0 = stop, else = null
-		if [ "$bgm_ingame" -eq "0" ]; then
+		# check bgm_nonstop, if 0 = stop, else = null
+		if [ "$bgm_nonstop" -eq "0" ]; then
 			# check bgm_fade, if 1 apply fade, else leave it
 			if [ "$bgm_fade" -eq "1" ]; then
 				vol_fade_out

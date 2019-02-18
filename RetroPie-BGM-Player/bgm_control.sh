@@ -1,11 +1,10 @@
 #!/bin/bash 
 #####################################################################
 #Project		:	RetroPie_BGM_Player
-#Version		:	1.0.0
 #Git			:	https://github.com/Naprosnia/RetroPie_BGM_Player
 #####################################################################
 #Script Name	:	bgm_control.sh
-#Date			:	20190216	(YYYYMMDD)
+#Date			:	20190218	(YYYYMMDD)
 #Description	:	BGM Player settings main menu.
 #Usage			:	Should be called from RetroPie\ BGM\ Player.sh.
 #Author       	:	Luis Torres aka Naprosnia
@@ -14,8 +13,8 @@
 #####################################################################
 
 # shorten paths
-BGM=$HOME"/RetroPie-BGM-Player"
-BGMCONTROL=$BGM"/bgm_control"
+BGM="$HOME/RetroPie-BGM-Player"
+BGMCONTROL="$BGM/bgm_control"
 
 function main_menu() {
     local choice
@@ -25,9 +24,10 @@ function main_menu() {
             --ok-label "Select" --cancel-label "Exit" --no-tags \
             --menu "Settings" 25 75 20 \
             "bgm_setvolume" "1 BGM Volume" \
-            "bgm_settoggle" "2 Toggle BGM" \
+            "bgm_settoggle" "2 BGM Toggle" \
 			"bgm_setfade" "3 BGM Fade Effect" \
-			"bgm_setingame" "4 BGM Over Games" \
+			"bgm_setnonstop" "4 BGM Non Stop" \
+			"bgm_setdelay" "5 BGM Delay" \
             2>&1 > /dev/tty)
 		
 		opt=$?
