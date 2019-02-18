@@ -171,11 +171,34 @@ sleep 1
 
 echo -e "--Downloading some music files...\n"
 cd $BGMMUSICS
-BGMMUSICS=("1.mp3" "2.mp3" "3.mp3" "4.mp3" "5.mp3" "6.mp3" )
-gitdownloader ${BGMMUSICS[@]} "/music"
+musics=("1.mp3" "2.mp3" "3.mp3" "4.mp3" "5.mp3" "6.mp3" )
+gitdownloader ${musics[@]} "/music"
 
 echo -e "\n[Instalation finished.]\n"
 sleep 1
+########################
+########################
+
+##############################
+## Remove Unnecessary Files ##
+##############################
+echo -e "\n[Removing unneeded files.]\n"
+sleep 1
+function delunneeded(){
+	files=("$@")
+	((last_id=${#files[@]} - 1))
+	path=${files[last_id]}
+	unset files[last_id]
+
+	for file in "${files[@]}"; do
+		if [ -e $path/$file ]; then
+			echo -e "-Removing $file...\n"
+			rm -rf $path/$file
+		fi
+	done
+}
+unneedfiles=("bgm_setingame.sh")
+delunneeded ${unneedfiles[@]} "$BGMCONTROL"
 ########################
 ########################
 
