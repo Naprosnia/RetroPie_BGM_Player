@@ -3,7 +3,7 @@ A simple background music player to implement on RetroPie and Emulation Station 
 
 I made it simpler to install and created an options menu that can be launched from RetroPie menu.
 
-Check out the [otions](#options) avaliable!
+Check out the [options](#options) avaliable!
 
 ## Installation
 1. `wget -N https://raw.githubusercontent.com/Naprosnia/RetroPie_BGM_Player/master/install.sh`
