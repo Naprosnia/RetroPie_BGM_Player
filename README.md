@@ -23,7 +23,7 @@ After the installation and the restart, music start playing when Emulation Stati
 * `BGM Fade Effect` - This option enables the fading effect when music start or stop playing.
 * `BGM Non Stop` - This option keep BGM Player playing while you play games.
 * `BGM Delay` - Change the amount of seconds that you want to delay the BGM Player start when EmulationStation load.
-* `BGM Update` - COMMING SOON
+* `BGM Update` - Update RetroPie BGM Player
 
 ## Video
 [![RetroPie BGM Player](https://img.youtube.com/vi/5G6uRU2iSRA/0.jpg)](https://www.youtube.com/watch?v=5G6uRU2iSRA)
