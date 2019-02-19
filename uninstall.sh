@@ -30,6 +30,7 @@ BGMCONTROL="$BGM/bgm_control"
 BGMMUSICS="$RP/roms/music"
 BGMOLD="$RPCONFIGS/retropie_bgm_player"
 MUSICPLAYER="mpg123"
+SCRIPTPATH=$(realpath $0)
 
 ########################
 ##    kill player     ##
@@ -84,11 +85,10 @@ sleep 1
 ########################
 ##       Restart      ##
 ########################
-scriptpath=$(realpath $0)
 echo -e "[Restart System]"
 echo -e "-To finish, we need to reboot.\n"
 read -n 1 -s -r -p "Press any key to Restart."
 echo -e "\n"
-(rm -f $scriptpath; sudo reboot)
+(rm -f $SCRIPTPATH; sudo reboot)
 ########################
 ########################
