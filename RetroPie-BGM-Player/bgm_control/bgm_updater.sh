@@ -12,21 +12,16 @@
 #Credits		:	crcerror : https://github.com/crcerror
 #####################################################################
 
-RP="$HOME/RetroPie"
-RPMENU="$RP/retropiemenu"
-RPSETUP="$HOME/RetroPie-Setup"
-RPCONFIGS="/opt/retropie/configs/all"
 BGM="$HOME/RetroPie-BGM-Player"
-BGMCONTROL="$BGM/bgm_control"
-BGMMUSICS="$RP/roms/music"
-BGMOLD="$RPCONFIGS/retropie_bgm_player"
 VERSION="$BGM/version.sh"
 GITVERSION="https://raw.githubusercontent.com/Naprosnia/RetroPie_BGM_Player/master/RetroPie-BGM-Player/version.sh"
+GITINSTALL="https://raw.githubusercontent.com/Naprosnia/RetroPie_BGM_Player/master/install.sh"
 
 source $VERSION >/dev/null 2>&1
 bgm_curversion=$bgm_version
 bgm_curdate=$bgm_date
 
+[ "$1" == "--reboot" ] && rebootsys
 
 infobox=
 infobox="${infobox}___________________________________________________________________________\n\n"
@@ -38,24 +33,21 @@ dialog --backtitle "RetroPie BGM Player" --title "BGM Updater Description" --msg
 
 
 function main_menu() {
-    local choice
 
-    while true; do
+	infobox=
+	infobox="${infobox}___________________________________________________________________________\n\n"
+	infobox="${infobox}RetroPie BGM Player Updater\n\n"
+	infobox="${infobox}Info: RetroPie BGM Player version: $bgm_curversion from $bgm_curdate \n\n"
+	infobox="${infobox}Do you want to check for updates?\n"
+	infobox="${infobox}___________________________________________________________________________\n\n"
+
+	dialog --backtitle "RetroPie BGM Player" --title "BGM Updater" --yesno "${infobox}" 0 0
 	
-		source $BGMSETTINGS >/dev/null 2>&1
-		
-        choice=$(dialog --backtitle "RetroPie BGM Player" --title "BGM Updater" \
-            --ok-label "Select" --cancel-label "Back" --no-tags \
-            --menu "Current version: $bgm_version from: $bgm_date" 25 75 20 \
-            1 "1 Check for updates." \
-            2>&1 > /dev/tty)
+	opt=$?
+	[ $opt -eq 1 ] && exit
+
+	dlversion
 			
-			opt=$?
-			[ $opt -eq 1 ] && exit
-			
-			dlversion
-			
-    done
 }
 
 function dlversion(){
@@ -69,10 +61,58 @@ function dlversion(){
 		bgm_newdate=$bgm_date
 		rm -rf $HOME/version.sh
 		versioncompare $bgm_curversion $bgm_newversion
-		[ $? -eq 2 ]  && update || uptodate
+		[ $? -eq 2 ]  && update || msgbox "BGM Updater Up-To-Date" "Your version: $bgm_curversion from $bgm_curdate is up-to-date."
 	else
-		errorcheck
+		msgbox "BGM Updater Error" "It was not possible to check the version available online"
 	fi
+}
+
+function msgbox(){
+	infobox=
+	infobox="${infobox}___________________________________________________________________________\n\n"
+	infobox="${infobox}RetroPie BGM Player Updater\n\n"
+	infobox="${infobox}$2\n"
+	infobox="${infobox}___________________________________________________________________________\n\n"
+
+	dialog --backtitle "RetroPie BGM Player" --title "$1" --msgbox "${infobox}" 0 0
+	exit
+}
+function update(){
+	infobox=
+	infobox="${infobox}___________________________________________________________________________\n\n"
+	infobox="${infobox}RetroPie BGM Player Updater\n\n"
+	infobox="${infobox}New version avaliable!\n"
+	infobox="${infobox}Version: $bgm_curversion to $bgm_newversion\n\n"
+	infobox="${infobox}Do you want to update?\n"
+	infobox="${infobox}___________________________________________________________________________\n\n"
+
+	dialog --backtitle "RetroPie BGM Player" --title "BGM Updater New Version Found" --yesno "${infobox}" 0 0
+	
+	opt=$?
+	[ $opt -eq 1 ] && exit
+	clear
+	cd $HOME
+	echo -e "[Downloading Installation File]\n\n"
+	if wget -N -q --show-progress $GITINSTALL; then
+		chmod a+rwx $HOME/install.sh
+		./install.sh --update
+	else
+		msgbox "BGM Updater Error" "It was not possible to download the installation file."
+	fi
+}
+
+function rebootsys(){
+	infobox=
+	infobox="${infobox}___________________________________________________________________________\n\n"
+	infobox="${infobox}RetroPie BGM Player Updater\n\n"
+	infobox="${infobox}Updated to version $bgm_curversion !\n\n"
+	infobox="${infobox}Your system will reboot now.\n"
+	infobox="${infobox}___________________________________________________________________________\n\n"
+
+	dialog --backtitle "RetroPie BGM Player" --title "BGM Updater Reboot" --msgbox "${infobox}" 0 0
+	#kill es to save metadata
+	killall emulationstation
+	sudo reboot
 }
 
 function versioncompare() {
@@ -106,38 +146,6 @@ function versioncompare() {
     return 0
 	
 	# return 0 - x=y  | 1 - x>y | 2 - x<y
-}
-
-function uptodate(){
-	infobox=
-	infobox="${infobox}___________________________________________________________________________\n\n"
-	infobox="${infobox}RetroPie BGM Player Updater\n\n"
-	infobox="${infobox}Your version: $bgm_curversion from $bgm_curdate is up-to-date.\n"
-	infobox="${infobox}___________________________________________________________________________\n\n"
-
-	dialog --backtitle "RetroPie BGM Player" --title "BGM Updater Up-To-Date" --msgbox "${infobox}" 0 0
-	exit
-}
-function errorcheck(){
-	infobox=
-	infobox="${infobox}___________________________________________________________________________\n\n"
-	infobox="${infobox}RetroPie BGM Player Updater\n\n"
-	infobox="${infobox}It was not possible to check the version available online.\n"
-	infobox="${infobox}___________________________________________________________________________\n\n"
-
-	dialog --backtitle "RetroPie BGM Player" --title "BGM Updater Error" --msgbox "${infobox}" 0 0
-	exit
-}
-function update(){
-	infobox=
-	infobox="${infobox}___________________________________________________________________________\n\n"
-	infobox="${infobox}RetroPie BGM Player Updater\n\n"
-	infobox="${infobox}New version avaliable!"
-	infobox="${infobox}Version: $bgm_curversion -> $bgm_newversion\n"
-	infobox="${infobox}___________________________________________________________________________\n\n"
-
-	dialog --backtitle "RetroPie BGM Player" --title "BGM Updater New Version" --msgbox "${infobox}" --yesno 0 0
-	exit
 }
 main_menu
 

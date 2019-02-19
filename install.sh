@@ -1,11 +1,11 @@
 #!/bin/bash 
 #####################################################################
 #Project		:	RetroPie_BGM_Player
-#Version		:	1.0.0
+#Version		:	0.5
 #Git			:	https://github.com/Naprosnia/RetroPie_BGM_Player
 #####################################################################
 #Script Name	:	install.sh
-#Date			:	20190218	(YYYYMMDD)
+#Date			:	20190219	(YYYYMMDD)
 #Description	:	The installation script.
 #Usage			:	wget -N https://raw.githubusercontent.com/Naprosnia/RetroPie_BGM_Player/master/install.sh
 #				:	chmod +x install.sh
@@ -93,7 +93,8 @@ if check_install; then
 	
 else
 
-	echo -e "--Player already installed, proceeding with the installation...\n"
+	echo -e "--Player already installed, killing process if running...\n"
+	killall $MUSICPLAYER >/dev/null 2>&1
 	sleep 2
 	
 fi
@@ -126,10 +127,10 @@ function gitdownloader(){
 }
 
 cd $BGM
-BGMFILES=("bgm_system.sh" "bgm_control.sh" "bgm_settings.cfg")
+BGMFILES=("bgm_system.sh" "bgm_control.sh" "bgm_settings.cfg" "version.sh")
 gitdownloader ${BGMFILES[@]} "/RetroPie-BGM-Player"
 cd $BGMCONTROL
-BGMFILES=("bgm_setvolume.sh" "bgm_settoggle.sh" "bgm_setfade.sh" "bgm_setnonstop.sh" "bgm_setdelay.sh")
+BGMFILES=("bgm_setvolume.sh" "bgm_settoggle.sh" "bgm_setfade.sh" "bgm_setnonstop.sh" "bgm_setdelay.sh" "bgm_updater.sh")
 gitdownloader ${BGMFILES[@]} "/RetroPie-BGM-Player/bgm_control"
 cd $RPMENU
 BGMFILES=("RetroPie-BGM-Player.sh")
@@ -205,10 +206,15 @@ delunneeded ${unneedfiles[@]} "$BGMCONTROL"
 ########################
 ##       Restart      ##
 ########################
-echo -e "[Restart System]"
-echo -e "-To finish, we need to reboot.\n"
-read -n 1 -s -r -p "Press any key to Restart."
-echo -e "\n"
-(rm -f realpath $0; sudo reboot)
+if [ "$1" == "--update" ]; then
+	(rm -f realpath $0; bash $BGMCONTROL/bgm_updater.sh --reboot)
+else
+	echo -e "[Restart System]"
+	echo -e "-To finish, we need to reboot.\n"
+	read -n 1 -s -r -p "Press any key to Restart."
+	echo -e "\n"
+	(rm -f realpath $0; sudo reboot)
+fi
+
 ########################
 ########################
