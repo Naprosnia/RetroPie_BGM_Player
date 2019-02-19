@@ -21,7 +21,7 @@ BGMCONTROL="$BGM/bgm_control"
 BGMMUSICS="$RP/roms/music"
 BGMOLD="$RPCONFIGS/retropie_bgm_player"
 VERSION="$BGM/version.sh"
-#NEWVERSION="$BGM/version.sh"
+GITVERSION="https://raw.githubusercontent.com/Naprosnia/RetroPie_BGM_Player/master/RetroPie-BGM-Player/version.sh"
 
 source $VERSION >/dev/null 2>&1
 bgm_curversion=$bgm_version
@@ -30,7 +30,7 @@ bgm_curdate=$bgm_date
 
 infobox=
 infobox="${infobox}___________________________________________________________________________\n\n"
-infobox="${infobox}RetroPie BGM Player Updater"
+infobox="${infobox}RetroPie BGM Player Updater\n\n"
 infobox="${infobox}BGM Player updater, check for new versions and install it automatically.\n"
 infobox="${infobox}___________________________________________________________________________\n\n"
 
@@ -53,7 +53,7 @@ function main_menu() {
 			opt=$?
 			[ $opt -eq 1 ] && exit
 			
-			
+			dlversion
 			
     done
 }
@@ -62,22 +62,20 @@ function dlversion(){
 	clear
 	echo -e "[Checking for updates...]"
 	cd $HOME
-	dlver=$(wget -N -q --show-progress "https://raw.githubusercontent.com/Naprosnia/RetroPie_BGM_Player/master/RetroPie-BGM-Player/version.sh")
-	if [ $? -ne 0 ]; then
+	if wget -N -q --show-progress $GITVERSION; then
 		chmod a+rwx $HOME/version.sh
 		source $HOME/version.sh >/dev/null 2>&1
 		bgm_newversion=$bgm_version
 		bgm_newdate=$bgm_date
 		rm -rf $HOME/version.sh
-		
+		versioncompare $bgm_curversion $bgm_newversion
+		[ $? -eq 2 ]  && update || uptodate
 	else
-		#not possible to check version
-		echo "not possible to check version"
+		errorcheck
 	fi
-	chmod a+rwx "$i"
 }
 
-vercomp () {
+function versioncompare() {
     if [[ $1 == $2 ]]
     then
         return 0
@@ -106,24 +104,40 @@ vercomp () {
         fi
     done
     return 0
+	
+	# return 0 - x=y  | 1 - x>y | 2 - x<y
 }
 
-testvercomp () {
-    vercomp $1 $2
-    case $? in
-        0) op='=';;
-        1) op='>';;
-        2) op='<';;
-    esac
-    if [[ $op != $3 ]]
-    then
-        #echo "FAIL: Expected '$3', Actual '$op', Arg1 '$1', Arg2 '$2'"
-		return 0
-    else
-        #echo "Pass: '$1 $op $2'"
-		return 1
-    fi
-}
+function uptodate(){
+	infobox=
+	infobox="${infobox}___________________________________________________________________________\n\n"
+	infobox="${infobox}RetroPie BGM Player Updater\n\n"
+	infobox="${infobox}Your version: $bgm_curversion from $bgm_curdate is up-to-date.\n"
+	infobox="${infobox}___________________________________________________________________________\n\n"
 
+	dialog --backtitle "RetroPie BGM Player" --title "BGM Updater Up-To-Date" --msgbox "${infobox}" 0 0
+	exit
+}
+function errorcheck(){
+	infobox=
+	infobox="${infobox}___________________________________________________________________________\n\n"
+	infobox="${infobox}RetroPie BGM Player Updater\n\n"
+	infobox="${infobox}It was not possible to check the version available online.\n"
+	infobox="${infobox}___________________________________________________________________________\n\n"
+
+	dialog --backtitle "RetroPie BGM Player" --title "BGM Updater Error" --msgbox "${infobox}" 0 0
+	exit
+}
+function update(){
+	infobox=
+	infobox="${infobox}___________________________________________________________________________\n\n"
+	infobox="${infobox}RetroPie BGM Player Updater\n\n"
+	infobox="${infobox}New version avaliable!"
+	infobox="${infobox}Version: $bgm_curversion -> $bgm_newversion\n"
+	infobox="${infobox}___________________________________________________________________________\n\n"
+
+	dialog --backtitle "RetroPie BGM Player" --title "BGM Updater New Version" --msgbox "${infobox}" --yesno 0 0
+	exit
+}
 main_menu
 
