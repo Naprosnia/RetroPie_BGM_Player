@@ -23,15 +23,6 @@ bgm_curdate=$bgm_date
 
 [ "$1" == "--reboot" ] && rebootsys
 
-infobox=
-infobox="${infobox}___________________________________________________________________________\n\n"
-infobox="${infobox}RetroPie BGM Player Updater\n\n"
-infobox="${infobox}BGM Player updater, check for new versions and install it automatically.\n"
-infobox="${infobox}___________________________________________________________________________\n\n"
-
-dialog --backtitle "RetroPie BGM Player" --title "BGM Updater Description" --msgbox "${infobox}" 0 0
-
-
 function main_menu() {
 
 	infobox=
