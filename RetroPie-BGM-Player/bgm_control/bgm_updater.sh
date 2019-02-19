@@ -102,7 +102,7 @@ function rebootsys(){
 
 	dialog --backtitle "RetroPie BGM Player" --title "BGM Updater Reboot" --msgbox "${infobox}" 0 0
 	#kill es to save metadata
-	killall emulationstation
+	killall emulationstation >/dev/null 2>&1
 	sudo reboot
 }
 

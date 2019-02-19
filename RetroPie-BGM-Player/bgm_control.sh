@@ -28,6 +28,7 @@ function main_menu() {
 			"bgm_setfade" "3 BGM Fade Effect" \
 			"bgm_setnonstop" "4 BGM Non Stop" \
 			"bgm_setdelay" "5 BGM Delay" \
+			"bgm_updater" "5 BGM Update" \
             2>&1 > /dev/tty)
 		
 		opt=$?
