@@ -206,14 +206,15 @@ delunneeded ${unneedfiles[@]} "$BGMCONTROL"
 ########################
 ##       Restart      ##
 ########################
+scriptpath=$(realpath $0)
 if [ "$1" == "--update" ]; then
-	(rm -f realpath $0; bash $BGMCONTROL/bgm_updater.sh --reboot)
+	(rm -f $scriptpath; bash $BGMCONTROL/bgm_updater.sh --reboot)
 else
 	echo -e "[Restart System]"
 	echo -e "-To finish, we need to reboot.\n"
 	read -n 1 -s -r -p "Press any key to Restart."
 	echo -e "\n"
-	(rm -f realpath $0; sudo reboot)
+	(rm -f $scriptpath; sudo reboot)
 fi
 
 ########################

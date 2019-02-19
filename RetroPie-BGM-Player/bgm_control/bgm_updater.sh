@@ -21,10 +21,11 @@ source $VERSION >/dev/null 2>&1
 bgm_curversion=$bgm_version
 bgm_curdate=$bgm_date
 
-[ "$1" == "--reboot" ] && rebootsys
+
 
 function main_menu() {
-
+	[ "$1" == "--reboot" ] && rebootsys
+	
 	infobox=
 	infobox="${infobox}___________________________________________________________________________\n\n"
 	infobox="${infobox}RetroPie BGM Player Updater\n\n"
@@ -138,5 +139,4 @@ function versioncompare() {
 	
 	# return 0 - x=y  | 1 - x>y | 2 - x<y
 }
-main_menu
-
+main_menu $@

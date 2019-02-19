@@ -84,10 +84,11 @@ sleep 1
 ########################
 ##       Restart      ##
 ########################
+scriptpath=$(realpath $0)
 echo -e "[Restart System]"
 echo -e "-To finish, we need to reboot.\n"
 read -n 1 -s -r -p "Press any key to Restart."
 echo -e "\n"
-(rm -f realpath $0; sudo reboot)
+(rm -f $scriptpath; sudo reboot)
 ########################
 ########################
