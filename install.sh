@@ -1,7 +1,7 @@
 #!/bin/bash 
 #####################################################################
 #Project		:	RetroPie_BGM_Player
-#Version		:	0.5
+#Version		:	1.6
 #Git			:	https://github.com/Naprosnia/RetroPie_BGM_Player
 #####################################################################
 #Script Name	:	install.sh
