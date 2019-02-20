@@ -1,2 +1,2 @@
-bgm_version="1.5"
-bgm_date="2019/02/19"
+bgm_version="1.6"
+bgm_date="2019/02/20"

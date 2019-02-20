@@ -15,7 +15,8 @@
 BGM="$HOME/RetroPie-BGM-Player"
 BGMCONTROL="$BGM/bgm_control"
 BGMSETTINGS="$BGM/bgm_settings.cfg"
-
+VERSION="$BGM/version.sh"
+source $VERSION >/dev/null 2>&1
 
 infobox=
 infobox="${infobox}___________________________________________________________________________\n\n"
@@ -23,7 +24,7 @@ infobox="${infobox}RetroPie BGM Player Delay\n\n"
 infobox="${infobox}Change the amount of seconds that you want to delay the BGM Player start when EmulationStation load.\n"
 infobox="${infobox}___________________________________________________________________________\n\n"
 
-dialog --backtitle "RetroPie BGM Player" --title "BGM Delay Description" --msgbox "${infobox}" 0 0
+dialog --backtitle "RetroPie BGM Player v.$bgm_version" --title "BGM Delay Description" --msgbox "${infobox}" 0 0
 
 
 function main_menu() {
@@ -33,7 +34,7 @@ function main_menu() {
 	
 		source $BGMSETTINGS >/dev/null 2>&1
 		
-        choice=$(dialog --backtitle "RetroPie BGM Player" --title "BGM Delay Setting" \
+        choice=$(dialog --backtitle "RetroPie BGM Player v.$bgm_version" --title "BGM Delay Setting" \
             --ok-label "Select" --cancel-label "Back" --no-tags --default-item "$bgm_delay"\
             --menu "Delay set to $bgm_delay seconds" 25 75 20 \
             0 "Instant Play" \

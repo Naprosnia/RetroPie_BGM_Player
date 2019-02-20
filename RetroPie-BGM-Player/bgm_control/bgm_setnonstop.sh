@@ -15,6 +15,8 @@
 BGM="$HOME/RetroPie-BGM-Player"
 BGMCONTROL="$BGM/bgm_control"
 BGMSETTINGS="$BGM/bgm_settings.cfg"
+VERSION="$BGM/version.sh"
+source $VERSION >/dev/null 2>&1
 
 infobox=
 infobox="${infobox}___________________________________________________________________________\n\n"
@@ -22,7 +24,7 @@ infobox="${infobox}RetroPie BGM Player Non Stop\n\n"
 infobox="${infobox}If enabled, this option keep BGM Player playing while you play games.\n"
 infobox="${infobox}___________________________________________________________________________\n\n"
 
-dialog --backtitle "RetroPie BGM Player" --title "BGM Non Stop Description" --msgbox "${infobox}" 0 0
+dialog --backtitle "RetroPie BGM Player v.$bgm_version" --title "BGM Non Stop Description" --msgbox "${infobox}" 0 0
 
 function main_menu() {
     local choice
@@ -32,7 +34,7 @@ function main_menu() {
 		source $BGMSETTINGS >/dev/null 2>&1
 		[ $bgm_nonstop -eq 0 ] && status=( "disabled" "Enable" 1 )  || status=( "enabled" "Disable" 0 )
 		
-        choice=$(dialog --backtitle "RetroPie BGM Player" --title "BGM Non Stop Setting" \
+        choice=$(dialog --backtitle "RetroPie BGM Player v.$bgm_version" --title "BGM Non Stop Setting" \
             --ok-label "Select" --cancel-label "Back" --no-tags \
             --menu "BGM Non Stop is ${status[0]}" 25 75 20 \
             1 "${status[1]} Non Stop" \

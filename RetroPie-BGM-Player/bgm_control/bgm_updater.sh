@@ -33,7 +33,7 @@ function main_menu() {
 	infobox="${infobox}Do you want to check for updates?\n"
 	infobox="${infobox}___________________________________________________________________________\n\n"
 
-	dialog --backtitle "RetroPie BGM Player" --title "BGM Updater" --yesno "${infobox}" 0 0
+	dialog --backtitle "RetroPie BGM Player v.$bgm_curversion" --title "BGM Updater" --yesno "${infobox}" 0 0
 	
 	opt=$?
 	[ $opt -eq 1 ] && exit
@@ -66,7 +66,7 @@ function msgbox(){
 	infobox="${infobox}$2\n"
 	infobox="${infobox}___________________________________________________________________________\n\n"
 
-	dialog --backtitle "RetroPie BGM Player" --title "$1" --msgbox "${infobox}" 0 0
+	dialog --backtitle "RetroPie BGM Player v.$bgm_curversion" --title "$1" --msgbox "${infobox}" 0 0
 	exit
 }
 function update(){
@@ -78,7 +78,7 @@ function update(){
 	infobox="${infobox}Do you want to update?\n"
 	infobox="${infobox}___________________________________________________________________________\n\n"
 
-	dialog --backtitle "RetroPie BGM Player" --title "BGM Updater New Version Found" --yesno "${infobox}" 0 0
+	dialog --backtitle "RetroPie BGM Player v.$bgm_curversion" --title "BGM Updater New Version Found" --yesno "${infobox}" 0 0
 	
 	opt=$?
 	[ $opt -eq 1 ] && exit
@@ -101,7 +101,7 @@ function rebootsys(){
 	infobox="${infobox}Your system will reboot now.\n"
 	infobox="${infobox}___________________________________________________________________________\n\n"
 
-	dialog --backtitle "RetroPie BGM Player" --title "BGM Updater Reboot" --msgbox "${infobox}" 0 0
+	dialog --backtitle "RetroPie BGM Player v.$bgm_curversion" --title "BGM Updater Reboot" --msgbox "${infobox}" 0 0
 	#kill es to save metadata
 	killall emulationstation >/dev/null 2>&1
 	sudo reboot

@@ -38,10 +38,10 @@ echo -e "[Remove older version]"
 rm -rf $BGMOLD
 [ -e $RPMENU/Background\ Music\ Settings.sh ] && rm -f $RPMENU/Background\ Music\ Settings.sh
 #use sudo because, owner can be root or file created incorrectly for any reason
-sudo chmod 777 $RPCONFIGS/runcommand-onstart.sh $RPCONFIGS/runcommand-onend.sh $RPCONFIGS/autostart.sh
-sed -i "/retropie_bgm_player\/bgm_stop.sh/d" $RPCONFIGS/runcommand-onstart.sh
-sed -i "/retropie_bgm_player\/bgm_play.sh/d" $RPCONFIGS/runcommand-onend.sh
-sed -i "/retropie_bgm_player\/bgm_init.sh/d" $RPCONFIGS/autostart.sh
+sudo chmod 777 $RPCONFIGS/runcommand-onstart.sh $RPCONFIGS/runcommand-onend.sh $RPCONFIGS/autostart.sh >/dev/null 2>&1
+sed -i "/retropie_bgm_player\/bgm_stop.sh/d" $RPCONFIGS/runcommand-onstart.sh >/dev/null 2>&1
+sed -i "/retropie_bgm_player\/bgm_play.sh/d" $RPCONFIGS/runcommand-onend.sh >/dev/null 2>&1
+sed -i "/retropie_bgm_player\/bgm_init.sh/d" $RPCONFIGS/autostart.sh >/dev/null 2>&1
 ########################
 ########################
 
@@ -81,7 +81,7 @@ if check_install; then
 	
 		echo -e "-----Player not installed correctly. Aborting script...\n\n"
 		sleep 1
-		sudo shred -u ${installscript} >/dev/null 2>&1
+		rm -f $SCRIPTPATH >/dev/null 2>&1
 		exit
 		
 	else
