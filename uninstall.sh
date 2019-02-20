@@ -49,10 +49,10 @@ sleep 1
 rm -rf $BGMOLD
 [ -e $RPMENU/Background\ Music\ Settings.sh ] && rm -f $RPMENU/Background\ Music\ Settings.sh
 #use sudo because, owner can be root or file created incorrectly for any reason
-sudo chmod 777 $RPCONFIGS/runcommand-onstart.sh $RPCONFIGS/runcommand-onend.sh $RPCONFIGS/autostart.sh
-sed -i "/retropie_bgm_player\/bgm_stop.sh/d" $RPCONFIGS/runcommand-onstart.sh
-sed -i "/retropie_bgm_player\/bgm_play.sh/d" $RPCONFIGS/runcommand-onend.sh
-sed -i "/retropie_bgm_player\/bgm_init.sh/d" $RPCONFIGS/autostart.sh
+sudo chmod 777 $RPCONFIGS/runcommand-onstart.sh $RPCONFIGS/runcommand-onend.sh $RPCONFIGS/autostart.sh >/dev/null 2>&1
+sed -i "/retropie_bgm_player\/bgm_stop.sh/d" $RPCONFIGS/runcommand-onstart.sh >/dev/null 2>&1
+sed -i "/retropie_bgm_player\/bgm_play.sh/d" $RPCONFIGS/runcommand-onend.sh >/dev/null 2>&1
+sed -i "/retropie_bgm_player\/bgm_init.sh/d" $RPCONFIGS/autostart.sh >/dev/null 2>&1
 ########################
 ########################
 
@@ -63,10 +63,10 @@ echo -e "[Remove newer version]"
 sleep 1
 rm -rf $BGM
 [ -e $RPMENU/RetroPie-BGM-Player.sh ] && rm -f $RPMENU/RetroPie-BGM-Player.sh
-sed -i "/bgm_system.sh/d" $RPCONFIGS/runcommand-onstart.sh
-sed -i "/bgm_system.sh/d" $RPCONFIGS/runcommand-onend.sh
-sed -i "/bgm_system.sh/d" $RPCONFIGS/autostart.sh
-rm -rf $BGMMUSICS
+sed -i "/bgm_system.sh/d" $RPCONFIGS/runcommand-onstart.sh >/dev/null 2>&1
+sed -i "/bgm_system.sh/d" $RPCONFIGS/runcommand-onend.sh >/dev/null 2>&1
+sed -i "/bgm_system.sh/d" $RPCONFIGS/autostart.sh >/dev/null 2>&1
+rm -rf $BGMMUSICS >/dev/null 2>&1
 ########################
 ########################
 
