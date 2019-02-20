@@ -25,6 +25,11 @@ After the installation and the restart, music start playing when Emulation Stati
 * `BGM Delay` - Change the amount of seconds that you want to delay the BGM Player start when EmulationStation load.
 * `BGM Update` - Update RetroPie BGM Player
 
+## Next Release Preview
+* Add support to emulated music with `VGMPlay` (*.vgm, *.vgz, *.cmf, *.dro)
+* Option menu related with `VGMPlay`
+* Ability to select which player to use (mp3 or emulated)
+
 ## Video
 [![RetroPie BGM Player](https://img.youtube.com/vi/5G6uRU2iSRA/0.jpg)](https://www.youtube.com/watch?v=5G6uRU2iSRA)
 
