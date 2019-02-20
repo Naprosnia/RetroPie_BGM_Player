@@ -79,11 +79,10 @@ VOLUMESTEP=
 case "$MUSICPLAYER" in
 	mpg123)
 		bgm_volume=$(( 32768*$bgm_volume/100 ))
-		echo $bgm_volume
 		;;
 	vgmplay)
 		bgm_volume=$(perl -E "say $bgm_volume/100")
-		echo $bgm_volume
+		[ "$bgm_volume" == "1" ] && bgm_volume="1.0"
 		;;
 esac
 
@@ -99,7 +98,7 @@ function bgm_init(){
 	(pgrep -x $MUSICPLAYER > /dev/null) && bgm_kill
 	
 	# start player (always)
-	setsid $MUSICPLAYER -f $bgm_volume -Z $BGMMUSICS/*.mp3 >/dev/null 2>&1 &
+	start_player
 	
 	# check bgm_toggle, if 1 = play, else = stop
 	if [ "$bgm_toggle" -eq "1" ]; then
@@ -133,7 +132,11 @@ function start_player(){
 }
 
 function generatem3u(){
-
+	find $BGMMUSICS -type f -iname "*.vgm" > $VGMPLAY/tempplaylist.m3u
+	find $BGMMUSICS -type f -iname "*.vgz" > $VGMPLAY/tempplaylist.m3u
+	find $BGMMUSICS -type f -iname "*.cmf" > $VGMPLAY/tempplaylist.m3u
+	find $BGMMUSICS -type f -iname "*.dro" > $VGMPLAY/tempplaylist.m3u
+	cat $VGMPLAY/tempplaylist.m3u | shuf > $VGMPLAY/playlist.m3u
 }
 
 function bgm_play(){
@@ -217,9 +220,16 @@ function vol_fade_out(){
 # option menu related functions
 function bgm_setsetting(){
 	sed -i "s/^$1.*/$1=$2/g" $BGMSETTINGS
+	if [ "$1" == "bgm_volume" ] && [ "$MUSICPLAYER" == "vgmplay" ]; then
+		vgm_volume=$(perl -E "say $2/100")
+		[ "$vgm_volume" == "1" ] && vgm_volume="1.0"
+		bgm_setvgmsetting "Volume" "$vgm_volume"
+	fi
+
 }
+
 function bgm_setvgmsetting(){
-	sed -i "s/^$1.*/$1=$2/g" $VGMPLAYSETTINGS
+	sed -i "s/^$1.*/$1 = $2/g" $VGMPLAYSETTINGS
 }
 # end of option menu related functions
 
