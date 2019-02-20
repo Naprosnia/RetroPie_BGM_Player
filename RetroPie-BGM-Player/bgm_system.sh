@@ -56,7 +56,8 @@ BGM="$HOME/RetroPie-BGM-Player"
 BGMCONTROL="$BGM/bgm_control"
 BGMSETTINGS="$BGM/bgm_settings.cfg"
 BGMMUSICS="$RP/roms/music"
-BGMVGMPLAY="$BGM/VGMPlay"
+VGMPLAY="$BGM/VGMPlay"
+VGMPLAYSETTINGS="$VGMPLAY/VGMPlay.ini"
 
 # settings area
 source $BGMSETTINGS >/dev/null 2>&1
@@ -73,6 +74,19 @@ VOLUMEZERO="amixer -q -M set $CHANNEL 0%"
 VOLUMERESET="amixer -q -M set $CHANNEL $CHANNELVOLUME%"
 FADEVOLUME=
 VOLUMESTEP=
+
+#convert volume depending on active player
+case "$MUSICPLAYER" in
+	mpg123)
+		bgm_volume=$(( 32768*$bgm_volume/100 ))
+		echo $bgm_volume
+		;;
+	vgmplay)
+		bgm_volume=$(perl -E "say $bgm_volume/100")
+		echo $bgm_volume
+		;;
+esac
+
 
 function bgm_init(){
 
@@ -105,24 +119,20 @@ function bgm_init(){
 
 function start_player(){
 	case "$MUSICPLAYER" in
-			mpg123)
-				setsid $MUSICPLAYER -f $bgm_volume -Z $BGMMUSICS/*.mp3 >/dev/null 2>&1 &
-				;;
-			vgmplay)
-				#generate here playlist
-				setsid $BGMVGMPLAY/$MUSICPLAYER  $BGMVGMPLAY/playlist.m3u >/dev/null 2>&1 &
-				;;
-			*)
-				exit
-				;;
-		esac
+		mpg123)
+			setsid $MUSICPLAYER -f $bgm_volume -Z $BGMMUSICS/*.mp3 >/dev/null 2>&1 &
+			;;
+		vgmplay)
+			#generate here playlist
+			setsid $VGMPLAY/$MUSICPLAYER  $VGMPLAY/playlist.m3u >/dev/null 2>&1 &
+			;;
+		*)
+			exit
+			;;
+	esac
 }
 
 function generatem3u(){
-
-}
-
-function convert_volume(){
 
 }
 
@@ -207,6 +217,9 @@ function vol_fade_out(){
 # option menu related functions
 function bgm_setsetting(){
 	sed -i "s/^$1.*/$1=$2/g" $BGMSETTINGS
+}
+function bgm_setvgmsetting(){
+	sed -i "s/^$1.*/$1=$2/g" $VGMPLAYSETTINGS
 }
 # end of option menu related functions
 

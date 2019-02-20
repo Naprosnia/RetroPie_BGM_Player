@@ -37,16 +37,16 @@ function main_menu() {
         choice=$(dialog --backtitle "RetroPie BGM Player v.$bgm_version" --title " BGM Volume Settings " \
             --ok-label "Select" --cancel-label "Back" --no-tags --default-item "$bgm_volume"\
             --menu "Set volume level" 25 75 20 \
-            32768 "1 Volume 100%" \
-            29484 "2 Volume 90%" \
-            26208 "3 Volume 80%" \
-            22932 "4 Volume 70%" \
-            19656 "5 Volume 60%" \
-            16380 "6 Volume 50%" \
-            13104 "7 Volume 40%" \
-            9828 "8 Volume 30%" \
-            6552 "9 Volume 20%" \
-            3276 "10 Volume 10%" \
+            100 "1 Volume 100%" \
+            90 "2 Volume 90%" \
+            80 "3 Volume 80%" \
+            70 "4 Volume 70%" \
+            60 "5 Volume 60%" \
+            50 "6 Volume 50%" \
+            40 "7 Volume 40%" \
+            30 "8 Volume 30%" \
+            20 "9 Volume 20%" \
+            10 "10 Volume 10%" \
             2>&1 > /dev/tty)
 			
 			opt=$?
