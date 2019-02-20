@@ -56,10 +56,15 @@ BGM="$HOME/RetroPie-BGM-Player"
 BGMCONTROL="$BGM/bgm_control"
 BGMSETTINGS="$BGM/bgm_settings.cfg"
 BGMMUSICS="$RP/roms/music"
+BGMVGMPLAY="$BGM/VGMPlay"
+
+# settings area
+source $BGMSETTINGS >/dev/null 2>&1
+# end of settings area
 
 # ALSA related vars
 readonly CHANNEL="PCM"
-readonly MUSICPLAYER="mpg123"
+readonly MUSICPLAYER=$bgm_player
 # get current volume
 CHANNELVOLUME=$(amixer -M get $CHANNEL | grep -o "...%]")
 CHANNELVOLUME=${CHANNELVOLUME//[^[:alnum:].]/}
@@ -68,10 +73,6 @@ VOLUMEZERO="amixer -q -M set $CHANNEL 0%"
 VOLUMERESET="amixer -q -M set $CHANNEL $CHANNELVOLUME%"
 FADEVOLUME=
 VOLUMESTEP=
-
-# settings area
-source $BGMSETTINGS >/dev/null 2>&1
-# end of settings area
 
 function bgm_init(){
 
@@ -100,6 +101,29 @@ function bgm_init(){
 		
 	fi
 	
+}
+
+function start_player(){
+	case "$MUSICPLAYER" in
+			mpg123)
+				setsid $MUSICPLAYER -f $bgm_volume -Z $BGMMUSICS/*.mp3 >/dev/null 2>&1 &
+				;;
+			vgmplay)
+				#generate here playlist
+				setsid $BGMVGMPLAY/$MUSICPLAYER  $BGMVGMPLAY/playlist.m3u >/dev/null 2>&1 &
+				;;
+			*)
+				exit
+				;;
+		esac
+}
+
+function generatem3u(){
+
+}
+
+function convert_volume(){
+
 }
 
 function bgm_play(){
