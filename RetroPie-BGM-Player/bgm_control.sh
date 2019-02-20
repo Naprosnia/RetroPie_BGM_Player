@@ -15,12 +15,14 @@
 # shorten paths
 BGM="$HOME/RetroPie-BGM-Player"
 BGMCONTROL="$BGM/bgm_control"
+VERSION="$BGM/version.sh"
+source $VERSION >/dev/null 2>&1
 
 function main_menu() {
     local choice
 
     while true; do
-        choice=$(dialog --backtitle "RetroPie BGM Player" --title "RetroPie BGM Player Settings" \
+        choice=$(dialog --backtitle "RetroPie BGM Player v.$bgm_version" --title "RetroPie BGM Player Settings" \
             --ok-label "Select" --cancel-label "Exit" --no-tags \
             --menu "Settings" 25 75 20 \
             "bgm_setvolume" "1 BGM Volume" \

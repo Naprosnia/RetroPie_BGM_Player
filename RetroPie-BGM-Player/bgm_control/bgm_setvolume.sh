@@ -15,6 +15,8 @@
 BGM="$HOME/RetroPie-BGM-Player"
 BGMCONTROL="$BGM/bgm_control"
 BGMSETTINGS="$BGM/bgm_settings.cfg"
+VERSION="$BGM/version.sh"
+source $VERSION >/dev/null 2>&1
 
 infobox=
 infobox="${infobox}___________________________________________________________________________\n\n"
@@ -22,7 +24,7 @@ infobox="${infobox}RetroPie BGM Player Volume\n\n"
 infobox="${infobox}Change BGM Player volume.\n"
 infobox="${infobox}___________________________________________________________________________\n\n"
 
-dialog --backtitle "RetroPie BGM Player" --title "BGM Volume Description" --msgbox "${infobox}" 0 0
+dialog --backtitle "RetroPie BGM Player v.$bgm_version" --title "BGM Volume Description" --msgbox "${infobox}" 0 0
 
 
 function main_menu() {
@@ -32,7 +34,7 @@ function main_menu() {
 	
 		source $BGMSETTINGS >/dev/null 2>&1
 		
-        choice=$(dialog --backtitle "RetroPie BGM Player" --title " BGM Volume Settings " \
+        choice=$(dialog --backtitle "RetroPie BGM Player v.$bgm_version" --title " BGM Volume Settings " \
             --ok-label "Select" --cancel-label "Back" --no-tags --default-item "$bgm_volume"\
             --menu "Set volume level" 25 75 20 \
             32768 "1 Volume 100%" \
