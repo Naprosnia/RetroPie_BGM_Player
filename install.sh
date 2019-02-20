@@ -149,7 +149,7 @@ function runcommandsetup(){
 			echo -e "---$file not found, creating..."
 			sleep 1
 			echo "$command" > $RPCONFIGS/$file
-			chmod +x $RPCONFIGS/$file
+			chmod a+rwx $RPCONFIGS/$file
 		else
 			echo -e "---$file found, writing..."
 			sleep 1
