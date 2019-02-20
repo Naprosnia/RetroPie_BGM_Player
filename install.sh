@@ -138,6 +138,7 @@ gitdownloader ${BGMFILES[@]} "/RetroPie-BGM-Player"
 
 echo -e "\n-Writing commands...\n"
 sleep 1
+cd $RPCONFIGS
 echo -e "--Writing on runcommand commands..."
 sleep 1
 function runcommandsetup(){
@@ -145,18 +146,22 @@ function runcommandsetup(){
 	file=$1
 	command=$2
 
-	if [ ! -e $RPCONFIGS/$file ]; then
+	if [ ! -e $file ]; then
 			echo -e "---$file not found, creating..."
 			sleep 1
-			echo "$command" > $RPCONFIGS/$file
-			chmod a+rwx $RPCONFIGS/$file
+			touch $file
+			sleep 0.5
+			chmod a+rwx $file
+			sleep 0.5
+			echo "$command" > $file
 		else
 			echo -e "---$file found, writing..."
 			sleep 1
 			#use sudo because, owner can be root or file created incorrectly for any reason
-			sudo chmod 777 $RPCONFIGS/$file
-			sed -i "/bgm_system.sh/d" $RPCONFIGS/$file
-			sed -i "1 i $command" $RPCONFIGS/$file
+			sudo chmod 777 $file
+			sleep 0.5
+			sed -i "/bgm_system.sh/d" $file
+			sed -i "1 i $command" $file
 	fi
 }
 runcommandsetup "runcommand-onstart.sh" "bash \$HOME/RetroPie-BGM-Player/bgm_system.sh -s"
@@ -165,9 +170,9 @@ sleep 1
 echo -e "--Writing on autostart script..."
 sleep 1
 #use sudo because, owner can be root or file created incorrectly for any reason
-sudo chmod 777 $RPCONFIGS/autostart.sh
-sed -i "/bgm_system.sh/d" $RPCONFIGS/autostart.sh
-sed -i "1 i bash \$HOME/RetroPie-BGM-Player/bgm_system.sh -i --autostart" $RPCONFIGS/autostart.sh
+sudo chmod 777 autostart.sh
+sed -i "/bgm_system.sh/d" autostart.sh
+sed -i "1 i bash \$HOME/RetroPie-BGM-Player/bgm_system.sh -i --autostart" autostart.sh
 sleep 1
 
 echo -e "--Downloading some music files...\n"
