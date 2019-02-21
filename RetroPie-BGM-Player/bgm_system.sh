@@ -24,10 +24,10 @@ function execute() {
 				(bgm_init "$2") &
 				;;
 			-p)
-				(bgm_play) &
+				bgm_play
 				;;
 			-s)
-				(bgm_stop) &
+				bgm_stop
 				;;
 			-setsetting)
 				bgm_setsetting "$2" "$3"
