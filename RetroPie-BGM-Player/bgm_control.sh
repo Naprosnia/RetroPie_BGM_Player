@@ -25,12 +25,12 @@ function main_menu() {
         choice=$(dialog --backtitle "RetroPie BGM Player v.$bgm_version" --title "RetroPie BGM Player Settings" \
             --ok-label "Select" --cancel-label "Exit" --no-tags \
             --menu "Settings" 25 75 20 \
-            "bgm_setvolume" "1 BGM Volume" \
-            "bgm_settoggle" "2 BGM Toggle" \
-			"bgm_setfade" "3 BGM Fade Effect" \
-			"bgm_setnonstop" "4 BGM Non Stop" \
-			"bgm_setdelay" "5 BGM Delay" \
-			"bgm_updater" "5 BGM Update" \
+            "bgm_setvolume" "V BGM Volume" \
+            "bgm_settoggle" "T BGM Toggle" \
+			"bgm_setfade" "F BGM Fade Effect" \
+			"bgm_setnonstop" "S BGM Non Stop" \
+			"bgm_setdelay" "D BGM Delay" \
+			"bgm_updater" "U BGM Update" \
             2>&1 > /dev/tty)
 		
 		opt=$?
