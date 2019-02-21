@@ -16,8 +16,6 @@
 BGM="$HOME/RetroPie-BGM-Player"
 BGMCONTROL="$BGM/bgm_control"
 BGMCONTROLGENERAL="$BGMCONTROL/general"
-BGMCONTROLPLAY="$BGMCONTROL/play"
-BGMCONTROLPLAYER="$BGMCONTROL/player"
 VERSION="$BGM/version.sh"
 source $VERSION >/dev/null 2>&1
 
@@ -25,19 +23,18 @@ function main_menu() {
     local choice
 
     while true; do
-        choice=$(dialog --backtitle "RetroPie BGM Player v.$bgm_version" --title "Main Menu" \
-            --ok-label "Select" --cancel-label "Exit" --no-tags \
+        choice=$(dialog --backtitle "RetroPie BGM Player v.$bgm_version" --title "General Settings" \
+            --ok-label "Select" --cancel-label "Back" --no-tags \
             --menu "Settings" 25 75 20 \
-			"$BGMCONTROLGENERAL/bgm_general" "1 General Settings" \
-			"$BGMCONTROLPLAY/bgm_play" "2 Play Settings" \
-			"$BGMCONTROLPLAYER/bgm_player" "3 Player Settings" \
-			"$BGMCONTROL/bgm_updater" "4 BGM Update" \
+			"bgm_setplayer" "1 Player" \
+			"bgm_setvolume" "2 Volume" \
+			"bgm_settoggle" "3 Toggle" \
             2>&1 > /dev/tty)
 		
 		opt=$?
 		[ $opt -eq 1 ] && exit
 		
-        bash $choice.sh
+        bash $BGMCONTROLGENERAL/$choice.sh
 		
     done
 }

@@ -32,6 +32,9 @@ function execute() {
 			-setsetting)
 				bgm_setsetting "$2" "$3"
 				;;
+			-m3u)
+				generatem3u
+				;;
 			-r)
 				bgm_restart
 				;;
@@ -92,6 +95,7 @@ function bgm_init(){
 	# if script called from autostart.sh, wait for omxplayer (splashscreen) to end
 	if [ "$1" == "--autostart" ]; then
 		while pgrep omxplayer >/dev/null; do sleep 1; done
+		[ "$bgm_player" == "vgmplay" ] && generatem3u
 		sleep $bgm_delay
 	fi
 	
@@ -122,7 +126,7 @@ function start_player(){
 			setsid $MUSICPLAYER -f $bgm_volume -Z $BGMMUSICS/*.mp3 >/dev/null 2>&1 &
 			;;
 		vgmplay)
-			#generate here playlist
+			#m3u playlist generated automatically inside -autostart bgm_init
 			setsid $VGMPLAY/$MUSICPLAYER  $VGMPLAY/playlist.m3u >/dev/null 2>&1 &
 			;;
 		*)
@@ -132,11 +136,18 @@ function start_player(){
 }
 
 function generatem3u(){
-	find $BGMMUSICS -type f -iname "*.vgm" > $VGMPLAY/tempplaylist.m3u
-	find $BGMMUSICS -type f -iname "*.vgz" > $VGMPLAY/tempplaylist.m3u
-	find $BGMMUSICS -type f -iname "*.cmf" > $VGMPLAY/tempplaylist.m3u
-	find $BGMMUSICS -type f -iname "*.dro" > $VGMPLAY/tempplaylist.m3u
-	cat $VGMPLAY/tempplaylist.m3u | shuf > $VGMPLAY/playlist.m3u
+
+	types=("vgm" "vgz" "cmf" "dro")
+
+	for type in "${types[@]}"; do
+		find $BGMMUSICS -type f -iname "*.$type" >> $VGMPLAY/templist.m3u
+	done
+	cat $VGMPLAY/templist.m3u | shuf > $VGMPLAY/shuftemplist.m3u
+	for run in {1..10}; do cat $VGMPLAY/shuftemplist.m3u; done > $VGMPLAY/playlist.m3u
+	chmod -R a+rwx $VGMPLAY/*.m3u >/dev/null 2>&1
+	rm -f $VGMPLAY/templist.m3u >/dev/null 2>&1
+	rm -f $VGMPLAY/shuftemplist.m3u >/dev/null 2>&1
+
 }
 
 function bgm_play(){

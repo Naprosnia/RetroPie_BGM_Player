@@ -13,11 +13,11 @@
 #####################################################################
 
 BGM="$HOME/RetroPie-BGM-Player"
-BGMCONTROL="$BGM/bgm_control"
 BGMSETTINGS="$BGM/bgm_settings.cfg"
 VERSION="$BGM/version.sh"
 source $VERSION >/dev/null 2>&1
 
+function description() {
 infobox=
 infobox="${infobox}___________________________________________________________________________\n\n"
 infobox="${infobox}RetroPie BGM Player Fade Effect\n\n"
@@ -30,6 +30,8 @@ infobox="${infobox}A special thanks to crcerror / cyperghost, for developing the
 infobox="${infobox}___________________________________________________________________________\n\n"
 
 dialog --backtitle "RetroPie BGM Player v.$bgm_version" --title "BGM Fade Effect Alert" --msgbox "${infobox}" 0 0
+}
+#description
 
 function main_menu() {
     local choice
@@ -39,7 +41,7 @@ function main_menu() {
 		source $BGMSETTINGS >/dev/null 2>&1
 		[ $bgm_fade -eq 0 ] && status=( "disabled" "Enable" 1 )  || status=( "enabled" "Disable" 0 )
 		
-        choice=$(dialog --backtitle "RetroPie BGM Player v.$bgm_version" --title "BGM Fade Effect Setting" \
+        choice=$(dialog --backtitle "RetroPie BGM Player v.$bgm_version" --title "Fade Effect" \
             --ok-label "Select" --cancel-label "Back" --no-tags \
             --menu "BGM Player Fade Effect is ${status[0]}" 25 75 20 \
             1 "${status[1]} Fade Effect" \
