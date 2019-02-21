@@ -84,6 +84,7 @@ function update(){
 	opt=$?
 	[ $opt -eq 1 ] && exit
 	updateinstall
+}
 
 function updateinstall(){
 	clear
