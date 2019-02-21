@@ -220,7 +220,7 @@ function vol_fade_out(){
 # option menu related functions
 function bgm_setsetting(){
 	sed -i "s/^$1.*/$1=$2/g" $BGMSETTINGS
-	if [ "$1" == "bgm_volume" ] && [ "$MUSICPLAYER" == "vgmplay" ]; then
+	if [ "$1" == "bgm_volume" ]; then
 		vgm_volume=$(perl -E "say $2/100")
 		[ "$vgm_volume" == "1" ] && vgm_volume="1.0"
 		bgm_setvgmsetting "Volume" "$vgm_volume"
