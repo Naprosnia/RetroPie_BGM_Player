@@ -33,7 +33,7 @@ function main_menu() {
 	infobox="${infobox}Do you want to check for updates?\n"
 	infobox="${infobox}___________________________________________________________________________\n\n"
 
-	dialog --backtitle "RetroPie BGM Player v.$bgm_curversion" --title "BGM Updater" --yesno "${infobox}" --extra-button --extra-label "Reinstall" 0 0
+	dialog --backtitle "RetroPie BGM Player v.$bgm_curversion" --title "BGM Updater" --extra-button --extra-label "Reinstall" --yesno "${infobox}" 0 0
 	
 	opt=$?
 	[ $opt -eq 1 ] && exit
