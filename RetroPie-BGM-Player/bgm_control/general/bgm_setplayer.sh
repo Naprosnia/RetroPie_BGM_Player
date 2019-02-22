@@ -49,6 +49,7 @@ function main_menu() {
         opt=$?
 		[ $opt -eq 1 ] && exit
 		
+		bash $BGM/bgm_system.sh -k
 		bash $BGM/bgm_system.sh -setsetting bgm_player $choice
 		bash $BGM/bgm_system.sh -i
 		

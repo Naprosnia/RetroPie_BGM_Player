@@ -95,7 +95,7 @@ function bgm_init(){
 	# if script called from autostart.sh, wait for omxplayer (splashscreen) to end
 	if [ "$1" == "--autostart" ]; then
 		while pgrep omxplayer >/dev/null; do sleep 1; done
-		[ "$bgm_player" == "vgmplay" ] && generatem3u
+		generatem3u
 		sleep $bgm_delay
 	fi
 	
@@ -123,7 +123,7 @@ function bgm_init(){
 function start_player(){
 	case "$MUSICPLAYER" in
 		mpg123)
-			setsid $MUSICPLAYER -f $bgm_volume -Z $BGMMUSICS/*.mp3 >/dev/null 2>&1 &
+			setsid $MUSICPLAYER -q -f $bgm_volume -Z $BGMMUSICS/*.mp3 >/dev/null 2>&1 &
 			;;
 		vgmplay)
 			#m3u playlist generated automatically inside -autostart bgm_init
@@ -136,7 +136,24 @@ function start_player(){
 }
 
 function generatem3u(){
+	chmod -R a+rwx $BGMMUSICS/*.*
+	
+	types=("vgm" "vgz" "cmf" "dro")
 
+	for type in "${types[@]}"; do
+		find $BGMMUSICS -type f -iname "*.$type" >> $VGMPLAY/templist.m3u
+	done
+	cat $VGMPLAY/templist.m3u | shuf > $VGMPLAY/shuftemplist.m3u
+	for run in {1..10}; do cat $VGMPLAY/shuftemplist.m3u; done > $VGMPLAY/playlist.m3u
+	chmod -R a+rwx $VGMPLAY/*.m3u >/dev/null 2>&1
+	rm -f $VGMPLAY/templist.m3u >/dev/null 2>&1
+	rm -f $VGMPLAY/shuftemplist.m3u >/dev/null 2>&1
+
+}
+
+function generatem3u(){
+	chmod -R a+rwx $BGMMUSICS/*.*
+	
 	types=("vgm" "vgz" "cmf" "dro")
 
 	for type in "${types[@]}"; do

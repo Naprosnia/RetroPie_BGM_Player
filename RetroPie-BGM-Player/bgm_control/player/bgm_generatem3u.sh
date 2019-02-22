@@ -23,8 +23,8 @@ function main_menu() {
 	infobox=
 	infobox="${infobox}___________________________________________________________________________\n\n"
 	infobox="${infobox}VGM Playlist Generator\n\n"
-	infobox="${infobox}In order to play VGM (emulated) musics (vgm, vgz, cmf, dro files), and every time you add new musics, you need to generate a playlist.\n"
-	infobox="${infobox}This playlist is used by VGM player to identify your musics, and when you add new musics or remove, this playlist need to be updated.\n"
+	infobox="${infobox}In order to play VGM (emulated) musics (vgm, vgz, cmf, dro files),\n and every time you add new musics, you need to generate a playlist.\n\n"
+	infobox="${infobox}This playlist is used by VGM player to identify your musics, and when\n you add new musics or remove, this playlist need to be updated.\n\n"
 	infobox="${infobox}This playlist is updated automatically every time your system starts.\n\n"
 	infobox="${infobox}Do you want to generate the VGM playlist?\n"
 	infobox="${infobox}___________________________________________________________________________\n\n"
