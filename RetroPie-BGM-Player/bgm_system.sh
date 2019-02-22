@@ -81,10 +81,10 @@ VOLUMESTEP=
 #convert volume depending on active player
 case "$MUSICPLAYER" in
 	mpg123)
-		bgm_volume=$(( 32768*$bgm_volume/100 ))
+		bgm_mp3volume=$(( 32768*$bgm_volume/100 ))
 		;;
 	vgmplay)
-		bgm_volume=$(perl -E "say $bgm_volume/100")
+		bgm_vgmvolume=$(perl -E "say $bgm_volume/100")
 		[ "$bgm_volume" == "1" ] && bgm_volume="1.0"
 		;;
 esac
@@ -95,7 +95,7 @@ function bgm_init(){
 	# if script called from autostart.sh, wait for omxplayer (splashscreen) to end
 	if [ "$1" == "--autostart" ]; then
 		while pgrep omxplayer >/dev/null; do sleep 1; done
-		generatem3u
+		generatelists
 		sleep $bgm_delay
 	fi
 	
@@ -123,11 +123,15 @@ function bgm_init(){
 function start_player(){
 	case "$MUSICPLAYER" in
 		mpg123)
-			setsid $MUSICPLAYER -q -f $bgm_volume -Z $BGMMUSICS/*.mp3 >/dev/null 2>&1 &
+			setsid $MUSICPLAYER -q -f $bgm_mp3volume -Z $BGMMUSICS/*.mp3 >/dev/null 2>&1 &
 			;;
 		vgmplay)
 			#m3u playlist generated automatically inside -autostart bgm_init
 			setsid $VGMPLAY/$MUSICPLAYER  $VGMPLAY/playlist.m3u >/dev/null 2>&1 &
+			;;
+		both)
+			#m3u playlist generated automatically inside -autostart bgm_init
+			setsid $BGM/$MUSICPLAYER >/dev/null 2>&1 &
 			;;
 		*)
 			exit
@@ -135,24 +139,13 @@ function start_player(){
 	esac
 }
 
-function generatem3u(){
+function generatelists(){
 	chmod -R a+rwx $BGMMUSICS/*.*
-	
-	types=("vgm" "vgz" "cmf" "dro")
-
-	for type in "${types[@]}"; do
-		find $BGMMUSICS -type f -iname "*.$type" >> $VGMPLAY/templist.m3u
-	done
-	cat $VGMPLAY/templist.m3u | shuf > $VGMPLAY/shuftemplist.m3u
-	for run in {1..10}; do cat $VGMPLAY/shuftemplist.m3u; done > $VGMPLAY/playlist.m3u
-	chmod -R a+rwx $VGMPLAY/*.m3u >/dev/null 2>&1
-	rm -f $VGMPLAY/templist.m3u >/dev/null 2>&1
-	rm -f $VGMPLAY/shuftemplist.m3u >/dev/null 2>&1
-
+	generatem3u
+	generatesequence
 }
 
 function generatem3u(){
-	chmod -R a+rwx $BGMMUSICS/*.*
 	
 	types=("vgm" "vgz" "cmf" "dro")
 
@@ -162,8 +155,32 @@ function generatem3u(){
 	cat $VGMPLAY/templist.m3u | shuf > $VGMPLAY/shuftemplist.m3u
 	for run in {1..10}; do cat $VGMPLAY/shuftemplist.m3u; done > $VGMPLAY/playlist.m3u
 	chmod -R a+rwx $VGMPLAY/*.m3u >/dev/null 2>&1
-	rm -f $VGMPLAY/templist.m3u >/dev/null 2>&1
-	rm -f $VGMPLAY/shuftemplist.m3u >/dev/null 2>&1
+	rm -f $VGMPLAY/templist.m3u $VGMPLAY/shuftemplist.m3u >/dev/null 2>&1
+
+}
+
+function generatesequence(){
+	
+	#echo "#!/bin/bash" > $BGM/bothlist
+	
+	types=("vgm" "vgz" "cmf" "dro" "mp3")
+	
+	for type in "${types[@]}"; do
+		
+		case "$type" in
+			mp3)
+				find $BGMMUSICS -type f -iname "*.$type" | sed "s/.*/mpg123 -q -f $bgm_mp3volume -Z & >\/dev\/null 2>\&1 &/" >> $BGM/bothlist
+				;;
+			*)
+				find $BGMMUSICS -type f -iname "*.$type" | sed "s/.*/bash \/home\/pi\/RetroPie-BGM-Player\/VGMPlay\/vgmplay &  >\/dev\/null 2>\&1 &/" >> $BGM/bothlist
+				;;
+		esac
+	done
+	cat $BGM/bothlist | shuf > $BGM/shufbothlist
+	for run in {1..10}; do cat $BGM/shufbothlist; done > $BGM/both
+	chmod -R a+rwx $BGM/both $BGM/bothlist  $BGM/shufbothlist >/dev/null 2>&1
+	rm -f $BGM/bothlist $BGM/shufbothlist >/dev/null 2>&1
+	[ -s $BGM/both ] && sed -i "1i \#\!\/bin\/bash" $BGM/both || echo "#!/bin/bash" > $BGM/both
 
 }
 
