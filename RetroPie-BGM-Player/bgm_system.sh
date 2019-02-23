@@ -297,10 +297,11 @@ function pkillcont(){
 function bgm_kill(){
 	if [ "$MUSICPLAYER" == "both" ]; then
 		bothid=$(pgrep both)
-		pkill -P -STOP $bothid
-		pkill -P $bothid
+		kill -TERM -- -$bothid >/dev/null 2>&1
+	else
+		killall $MUSICPLAYER >/dev/null 2>&1
 	fi
-	killall $MUSICPLAYER >/dev/null 2>&1
+	
 }
 
 function bgm_restart(){
