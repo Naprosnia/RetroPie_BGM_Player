@@ -299,7 +299,6 @@ function bgm_kill(){
 		bothid=$(pgrep both)
 		pkill -P -STOP $bothid
 		pkill -P $bothid
-		pkill 
 	fi
 	killall $MUSICPLAYER >/dev/null 2>&1
 }
