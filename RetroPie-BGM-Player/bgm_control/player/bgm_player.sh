@@ -26,6 +26,7 @@ function main_menu() {
             --ok-label "Select" --cancel-label "Back" --no-tags \
             --menu "Settings" 25 75 20 \
 			"bgm_generatem3u" "1 Generate VGM Playlist" \
+			"bgm_generatesequence" "2 Both Players Sequence List" \
             2>&1 > /dev/tty)
 		
 		opt=$?

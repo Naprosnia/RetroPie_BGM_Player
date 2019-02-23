@@ -35,6 +35,12 @@ function execute() {
 			-m3u)
 				generatem3u
 				;;
+			-seq)
+				generatesequence
+				;;
+			-lists)
+				generatelists
+				;;
 			-r)
 				bgm_restart
 				;;
@@ -78,17 +84,10 @@ VOLUMERESET="amixer -q -M set $CHANNEL $CHANNELVOLUME%"
 FADEVOLUME=
 VOLUMESTEP=
 
-#convert volume depending on active player
-case "$MUSICPLAYER" in
-	mpg123)
-		bgm_mp3volume=$(( 32768*$bgm_volume/100 ))
-		;;
-	vgmplay)
-		bgm_vgmvolume=$(perl -E "say $bgm_volume/100")
-		[ "$bgm_volume" == "1" ] && bgm_volume="1.0"
-		;;
-esac
-
+#convert volume for each player
+bgm_mp3volume=$(( 32768*$bgm_volume/100 ))
+bgm_vgmvolume=$(perl -E "say $bgm_volume/100")
+[ "$bgm_vgmvolume" == "1" ] && bgm_vgmvolume="1.0"
 
 function bgm_init(){
 
@@ -114,7 +113,7 @@ function bgm_init(){
 		
 	else
 	
-		pkill -STOP $MUSICPLAYER
+		pkillstop
 		
 	fi
 	
@@ -169,10 +168,10 @@ function generatesequence(){
 		
 		case "$type" in
 			mp3)
-				find $BGMMUSICS -type f -iname "*.$type" | sed "s/.*/mpg123 -q -f $bgm_mp3volume -Z & >\/dev\/null 2>\&1 &/" >> $BGM/bothlist
+				find $BGMMUSICS -type f -iname "*.$type" | sed "s/.*/mpg123 -q -f $bgm_mp3volume -Z & >\/dev\/null 2>\&1/" >> $BGM/bothlist
 				;;
 			*)
-				find $BGMMUSICS -type f -iname "*.$type" | sed "s/.*/bash \/home\/pi\/RetroPie-BGM-Player\/VGMPlay\/vgmplay &  >\/dev\/null 2>\&1 &/" >> $BGM/bothlist
+				find $BGMMUSICS -type f -iname "*.$type" | sed "s/.*/bash \/home\/pi\/RetroPie-BGM-Player\/VGMPlay\/vgmplay &  >\/dev\/null 2>\&1/" >> $BGM/bothlist
 				;;
 		esac
 	done
@@ -194,7 +193,7 @@ function bgm_play(){
 			if [ "$bgm_fade" -eq "1" ]; then
 				vol_fade_in
 			else
-				pkill -CONT $MUSICPLAYER
+				pkillcont
 			fi
 		fi
 	fi
@@ -211,7 +210,7 @@ function bgm_stop(){
 			if [ "$bgm_fade" -eq "1" ]; then
 				vol_fade_out
 			else
-				pkill -STOP $MUSICPLAYER
+				pkillstop
 			fi
 		fi
 		
@@ -236,7 +235,7 @@ function vol_fade_in(){
 
     $VOLUMEZERO
     sleep 0.2
-    pkill -CONT $MUSICPLAYER
+    pkillcont
     FADEVOLUME=10
     until [[ $FADEVOLUME -ge $CHANNELVOLUME ]]; do
         fade_set_step
@@ -256,7 +255,7 @@ function vol_fade_out(){
         sleep 0.2
     done
     $VOLUMEZERO
-    pkill -STOP $MUSICPLAYER
+    pkillstop
     sleep 0.2
     $VOLUMERESET
 }
@@ -278,10 +277,31 @@ function bgm_setvgmsetting(){
 }
 # end of option menu related functions
 
+function pkillstop(){
+	if [ "$MUSICPLAYER" == "both" ]; then
+		bothid=$(pgrep both)
+		pkill -P -STOP $bothid
+	else
+		pkill -STOP $MUSICPLAYER
+	fi
+}
+function pkillcont(){
+	if [ "$MUSICPLAYER" == "both" ]; then
+		bothid=$(pgrep both)
+		pkill -P -CONT $bothid
+	else
+		pkill -CONT $MUSICPLAYER
+	fi
+}
+
 function bgm_kill(){
-
+	if [ "$MUSICPLAYER" == "both" ]; then
+		bothid=$(pgrep both)
+		pkill -P -STOP $bothid
+		pkill -P $bothid
+		pkill 
+	fi
 	killall $MUSICPLAYER >/dev/null 2>&1
-
 }
 
 function bgm_restart(){
