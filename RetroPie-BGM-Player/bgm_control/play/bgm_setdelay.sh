@@ -4,7 +4,7 @@
 #Git			:	https://github.com/Naprosnia/RetroPie_BGM_Player
 #####################################################################
 #Script Name	:	bgm_setdelay.sh
-#Date			:	20190218	(YYYYMMDD)
+#Date			:	20190222	(YYYYMMDD)
 #Description	:	BGM Player autostart delay setting menu.
 #Usage			:	Should be called from bgm_control.sh.
 #Author       	:	Luis Torres aka Naprosnia
@@ -13,7 +13,7 @@
 #####################################################################
 
 BGM="$HOME/RetroPie-BGM-Player"
-BGMSETTINGS="$BGM/bgm_settings.cfg"
+BGMSETTINGS="$BGM/bgm_settings.ini"
 VERSION="$BGM/version.sh"
 source $VERSION >/dev/null 2>&1
 

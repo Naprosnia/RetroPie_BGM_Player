@@ -4,7 +4,7 @@
 #Git			:	https://github.com/Naprosnia/RetroPie_BGM_Player
 #####################################################################
 #Script Name	:	bgm_generatesequence.sh
-#Date			:	20190218	(YYYYMMDD)
+#Date			:	20190222	(YYYYMMDD)
 #Description	:	BGM Player sequence generator for both players
 #Usage			:	Should be called from bgm_control.sh.
 #Author       	:	Luis Torres aka Naprosnia

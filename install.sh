@@ -5,7 +5,7 @@
 #Git			:	https://github.com/Naprosnia/RetroPie_BGM_Player
 #####################################################################
 #Script Name	:	install.sh
-#Date			:	20190219	(YYYYMMDD)
+#Date			:	20190224	(YYYYMMDD)
 #Description	:	The installation script.
 #Usage			:	wget -N https://raw.githubusercontent.com/Naprosnia/RetroPie_BGM_Player/master/install.sh
 #				:	chmod +x install.sh
@@ -28,14 +28,35 @@ RPSETUP="$HOME/RetroPie-Setup"
 RPCONFIGS="/opt/retropie/configs/all"
 BGM="$HOME/RetroPie-BGM-Player"
 BGMCONTROL="$BGM/bgm_control"
+BGMCONTROLGENERAL="$BGMCONTROL/general"
+BGMCONTROLPLAY="$BGMCONTROL/play"
+BGMCONTROLPLAYER="$BGMCONTROL/player"
+BGMLAUNCHER="$BGM/bgm_launcher"
+BGMBOTH="$BGMLAUNCHER/both"
+BGMVGMPLAYER="$BGMLAUNCHER/vgmplayer"
+BGMMP3PLAYER="$BGMLAUNCHER/mp3player"
 BGMMUSICS="$RP/roms/music"
 BGMOLD="$RPCONFIGS/retropie_bgm_player"
+BGMGITBRANCH="master"
 SCRIPTPATH=$(realpath $0)
+
+echo -e "[Preparing Installation]"
+sleep 1
+
+########################
+##   Kill Processes   ##
+########################
+echo -e "-Killing some processes..."
+killall bgm_launcher.sh mpg123 vgmplay both>/dev/null 2>&1
+########################
+########################
+
 ########################
 ##remove older version##
 ########################
-echo -e "[Remove older version]"
+echo -e "-Removing older versions..."
 rm -rf $BGMOLD
+rm -rf $BGM
 [ -e $RPMENU/Background\ Music\ Settings.sh ] && rm -f $RPMENU/Background\ Music\ Settings.sh
 #use sudo because, owner can be root or file created incorrectly for any reason
 sudo chmod 777 $RPCONFIGS/runcommand-onstart.sh $RPCONFIGS/runcommand-onend.sh $RPCONFIGS/autostart.sh >/dev/null 2>&1
@@ -45,59 +66,37 @@ sed -i "/retropie_bgm_player\/bgm_init.sh/d" $RPCONFIGS/autostart.sh >/dev/null 
 ########################
 ########################
 
-########################
-##mpg123 installation ##
-########################
-echo -e "[Music Player Installation]"
-
-MUSICPLAYER="mpg123"
-
-function check_install(){
-
-	MUSICPLAYER_STATUS=$(dpkg-query -W --showformat='${Status}\n' $MUSICPLAYER  2> /dev/null|grep "install ok installed")
-	
-	if [ "" == "$MUSICPLAYER_STATUS" ]; then
-		return 0
-	else
-		return 1
-	fi
-	
-}
-
-echo -e "-Checking player installation..."
+#############################
+##Packages and Dependencies##
+#############################
+echo -e "[Packages and Dependencies Installation]"
 sleep 1
 
-if check_install; then
+echo -e "-Checking packages and dependencies..."
+sleep 1
 
-	echo -e "--Player not installed..."
-	sleep 1
-	echo -e "---Installing it now...\n"
-	sleep 1
-	sudo apt-get update; sudo apt-get install -y $MUSICPLAYER
-	echo -e "\n----Checking installation result..."
-	sleep 1
-	
-	if check_install; then
-	
-		echo -e "-----Player not installed correctly. Aborting script...\n\n"
-		sleep 1
-		rm -f $SCRIPTPATH >/dev/null 2>&1
-		exit
-		
+packages=("mpg123" "make" "gcc" "zlib1g-dev" "libao-dev")
+installpackages=
+
+for package in "${packages[@]}"; do
+	if dpkg -s $package >/dev/null 2>&1; then
+		echo -e "--$package : Installed"
 	else
-	
-		echo -e "-----Player installed successfully, proceeding with the installation...\n"
-		sleep 1
-		
-	fi	
-	
-else
+		echo -e "--$package : Not Installed"
+		installpackages+=("$package")
+	fi
+done
 
-	echo -e "--Player already installed, killing process if running...\n"
-	killall $MUSICPLAYER >/dev/null 2>&1
-	sleep 2
+if [ ${#installpackages[@]} -gt 0 ]; then
 	
+	echo -e "---Installing missing packages and dependencies.../n"
+	sleep 1
+	
+	sudo apt-get update; sudo apt-get install -y ${installpackages[@]}
+
 fi
+echo -e "/n--All packages and dependencies are installed."
+sleep 1
 ########################
 ########################
 
@@ -107,11 +106,13 @@ fi
 
 echo -e "[Installing RetroPie BGM Player]"
 sleep 1
+
 echo -e "-Creating folders..."
-mkdir -p -m 0777 $BGMCONTROL
-mkdir -p -m 0777 $BGMMUSICS
 sleep 1
+mkdir -p -m 0777 $BGMCONTROLGENERAL $BGMCONTROLPLAY $BGMCONTROLPLAYER $BGMMP3PLAYER $BGMVGMPLAYER $BGMBOTH $BGMMUSICS
+
 echo -e "--Downloading system files...\n"
+sleep 1
 
 function gitdownloader(){
 
@@ -121,23 +122,63 @@ function gitdownloader(){
 	unset files[last_id]
 
 	for i in "${files[@]}"; do
-		wget -N -q --show-progress "https://raw.githubusercontent.com/Naprosnia/RetroPie_BGM_Player/master$path/$i"
-		chmod a+rwx "$i"
+		wget -N -q --show-progress "https://raw.githubusercontent.com/Naprosnia/RetroPie_BGM_Player/$BGMGITBRANCH$path/$i"
+		#chmod a+rwx "$i"
 	done
 }
 
 cd $BGM
-BGMFILES=("bgm_system.sh" "bgm_control.sh" "bgm_settings.cfg" "version.sh")
+BGMFILES=("bgm_system.sh" "bgm_control.sh" "bgm_settings.ini" "version.sh")
 gitdownloader ${BGMFILES[@]} "/RetroPie-BGM-Player"
+
 cd $BGMCONTROL
-BGMFILES=("bgm_setvolume.sh" "bgm_settoggle.sh" "bgm_setfade.sh" "bgm_setnonstop.sh" "bgm_setdelay.sh" "bgm_updater.sh")
+BGMFILES=("bgm_updater.sh")
 gitdownloader ${BGMFILES[@]} "/RetroPie-BGM-Player/bgm_control"
+
+cd $BGMCONTROLGENERAL
+BGMFILES=("bgm_general.sh" "bgm_setplayer.sh" "bgm_settoggle.sh" "bgm_setvolume.sh")
+gitdownloader ${BGMFILES[@]} "/RetroPie-BGM-Player/bgm_control/general"
+
+cd $BGMCONTROLPLAY
+BGMFILES=("bgm_play.sh" "bgm_setdelay.sh" "bgm_setfade.sh" "bgm_setnonstop.sh")
+gitdownloader ${BGMFILES[@]} "/RetroPie-BGM-Player/bgm_control/play"
+
+cd $BGMCONTROLPLAYER
+BGMFILES=("bgm_player.sh" "bgm_generatem3u.sh" "bgm_generatesequence.sh")
+gitdownloader ${BGMFILES[@]} "/RetroPie-BGM-Player/bgm_control/player"
+
+cd $BGMLAUNCHER
+BGMFILES=("bgm_launcher.sh")
+gitdownloader ${BGMFILES[@]} "/RetroPie-BGM-Player/bgm_launcher"
+
+cd $BGMMP3PLAYER
+BGMFILES=("mp3player")
+gitdownloader ${BGMFILES[@]} "/RetroPie-BGM-Player/bgm_launcher/mp3player"
+
+cd $BGMVGMPLAYER
+BGMFILES=("vgmplay" "vgmplayer" "VGMPlay.ini")
+gitdownloader ${BGMFILES[@]} "/RetroPie-BGM-Player/bgm_launcher/vgmplayer"
+
+cd $BGMBOTH
+BGMFILES=("both")
+gitdownloader ${BGMFILES[@]} "/RetroPie-BGM-Player/bgm_launcher/both"
+
 cd $RPMENU
 BGMFILES=("RetroPie-BGM-Player.sh")
 gitdownloader ${BGMFILES[@]} "/RetroPie-BGM-Player"
 
+cd $BGMMUSICS
+BGMFILES=("1.mp3" "2.mp3" "3.mp3" "4.mp3" "5.mp3" "6.mp3" )
+gitdownloader ${BGMFILES[@]} "/music"
+
+echo -e "--Applying permissions...\n"
+sleep 1
+chmod -R a+rwx $BGM $BGMMUSICS
+
+
 echo -e "\n-Writing commands...\n"
 sleep 1
+
 cd $RPCONFIGS
 echo -e "--Writing on runcommand commands..."
 sleep 1
@@ -175,36 +216,8 @@ sed -i "/bgm_system.sh/d" autostart.sh
 sed -i "1 i bash \$HOME/RetroPie-BGM-Player/bgm_system.sh -i --autostart" autostart.sh
 sleep 1
 
-echo -e "--Downloading some music files...\n"
-cd $BGMMUSICS
-musics=("1.mp3" "2.mp3" "3.mp3" "4.mp3" "5.mp3" "6.mp3" )
-gitdownloader ${musics[@]} "/music"
-
 echo -e "\n[Instalation finished.]\n"
 sleep 1
-########################
-########################
-
-##############################
-## Remove Unnecessary Files ##
-##############################
-echo -e "\n[Removing unneeded files.]\n"
-sleep 1
-function delunneeded(){
-	files=("$@")
-	((last_id=${#files[@]} - 1))
-	path=${files[last_id]}
-	unset files[last_id]
-
-	for file in "${files[@]}"; do
-		if [ -e $path/$file ]; then
-			echo -e "-Removing $file...\n"
-			rm -rf $path/$file
-		fi
-	done
-}
-unneedfiles=("bgm_setingame.sh")
-delunneeded ${unneedfiles[@]} "$BGMCONTROL"
 ########################
 ########################
 

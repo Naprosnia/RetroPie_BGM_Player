@@ -1,0 +1,25 @@
+#!/bin/bash 
+#####################################################################
+#Project		:	RetroPie_BGM_Player
+#Git			:	https://github.com/Naprosnia/RetroPie_BGM_Player
+#####################################################################
+#Script Name	:	vgmplayer.sh
+#Date			:	20190224	(YYYYMMDD)
+#Description	:	Start vgmplay.
+#Usage			:	It should be called from bgm_launcher.sh.
+#Author       	:	Luis Torres aka Naprosnia
+#####################################################################
+#Credits		:	crcerror : https://github.com/crcerror
+#####################################################################
+
+[[ "$(pgrep -c -f $(basename $0))" -gt 1 ]] && exit
+
+BGM="$HOME/RetroPie-BGM-Player"
+BGMLAUNCHER="$BGM/bgm_launcher"
+BGMVGMPLAYER="$BGMLAUNCHER/vgmplayer"
+
+if [ -s $BGMVGMPLAYER/playlist.m3u ]; then
+	./$BGMVGMPLAYER/vgmplay $BGMVGMPLAYER/playlist.m3u >/dev/null 2>&1
+else
+	sleep 10
+fi

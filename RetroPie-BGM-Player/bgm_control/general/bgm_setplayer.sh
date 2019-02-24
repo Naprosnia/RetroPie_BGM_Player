@@ -4,7 +4,7 @@
 #Git			:	https://github.com/Naprosnia/RetroPie_BGM_Player
 #####################################################################
 #Script Name	:	bgm_setplayer.sh
-#Date			:	20190218	(YYYYMMDD)
+#Date			:	20190222	(YYYYMMDD)
 #Description	:	BGM Player select player menu.
 #Usage			:	Should be called from bgm_control.sh.
 #Author       	:	Luis Torres aka Naprosnia
@@ -13,7 +13,7 @@
 #####################################################################
 
 BGM="$HOME/RetroPie-BGM-Player"
-BGMSETTINGS="$BGM/bgm_settings.cfg"
+BGMSETTINGS="$BGM/bgm_settings.ini"
 VERSION="$BGM/version.sh"
 source $VERSION >/dev/null 2>&1
 
@@ -34,22 +34,21 @@ function main_menu() {
     while true; do
 	
 		source $BGMSETTINGS >/dev/null 2>&1
-		[ "$bgm_player" == "mpg123" ] && mp3p="X" || mp3p=" "
-		[ "$bgm_player" == "vgmplay" ] && vgmp="X"  || vgmp=" "
+		[ "$bgm_player" == "mp3player" ] && mp3p="X" || mp3p=" "
+		[ "$bgm_player" == "vgmplayer" ] && vgmp="X"  || vgmp=" "
 		[ "$bgm_player" == "both" ] && bothp="X"  || bothp=" "
 		
         choice=$(dialog --backtitle "RetroPie BGM Player v.$bgm_version" --title "Player Select" \
             --ok-label "Select" --cancel-label "Back" --no-tags --default-item "$bgm_player" \
             --menu "Select your Player" 25 75 20 \
-            "mpg123" "1 [$mp3p] MP3 Player" \
-			"vgmplay" "2 [$vgmp] VGM Player" \
+            "mp3player" "1 [$mp3p] MP3 Player" \
+			"vgmplayer" "2 [$vgmp] VGM Player" \
 			"both" "3 [$bothp] Both Players" \
             2>&1 > /dev/tty)
 
         opt=$?
 		[ $opt -eq 1 ] && exit
 		
-		bash $BGM/bgm_system.sh -k
 		bash $BGM/bgm_system.sh -setsetting bgm_player $choice
 		bash $BGM/bgm_system.sh -i
 		

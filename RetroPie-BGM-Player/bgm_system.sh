@@ -4,7 +4,7 @@
 #Git			:	https://github.com/Naprosnia/RetroPie_BGM_Player
 #####################################################################
 #Script Name	:	bgm_system.sh
-#Date			:	20190218	(YYYYMMDD)
+#Date			:	20190224	(YYYYMMDD)
 #Description	:	This script contain all functions needed by BGM.
 #Usage			:	It should be called from other scripts using arguments.
 #Author       	:	Luis Torres aka Naprosnia
@@ -61,12 +61,22 @@ RP="$HOME/RetroPie"
 RPMENU="$RP/retropiemenu"
 RPSETUP="$HOME/RetroPie-Setup"
 RPCONFIGS="/opt/retropie/configs/all"
+
 BGM="$HOME/RetroPie-BGM-Player"
 BGMCONTROL="$BGM/bgm_control"
-BGMSETTINGS="$BGM/bgm_settings.cfg"
+BGMSETTINGS="$BGM/bgm_settings.ini"
 BGMMUSICS="$RP/roms/music"
-VGMPLAY="$BGM/VGMPlay"
-VGMPLAYSETTINGS="$VGMPLAY/VGMPlay.ini"
+BGMLAUNCHER="$BGM/bgm_launcher"
+
+
+LAUNCHER="bgm_launcher.sh"
+LAUNCHERID=$(pgrep $LAUNCHER)
+
+BGMBOTH="$BGMLAUNCHER/both"
+BGMVGMPLAYER="$BGMLAUNCHER/vgmplayer"
+BGMMP3PLAYER="$BGMLAUNCHER/mp3player"
+
+VGMPLAYSETTINGS="$BGMVGMPLAYER/VGMPlay.ini"
 
 # settings area
 source $BGMSETTINGS >/dev/null 2>&1
@@ -74,7 +84,6 @@ source $BGMSETTINGS >/dev/null 2>&1
 
 # ALSA related vars
 readonly CHANNEL="PCM"
-readonly MUSICPLAYER=$bgm_player
 # get current volume
 CHANNELVOLUME=$(amixer -M get $CHANNEL | grep -o "...%]")
 CHANNELVOLUME=${CHANNELVOLUME//[^[:alnum:].]/}
@@ -84,10 +93,8 @@ VOLUMERESET="amixer -q -M set $CHANNEL $CHANNELVOLUME%"
 FADEVOLUME=
 VOLUMESTEP=
 
-#convert volume for each player
+#convert volume for mp3player
 bgm_mp3volume=$(( 32768*$bgm_volume/100 ))
-bgm_vgmvolume=$(perl -E "say $bgm_volume/100")
-[ "$bgm_vgmvolume" == "1" ] && bgm_vgmvolume="1.0"
 
 function bgm_init(){
 
@@ -98,10 +105,10 @@ function bgm_init(){
 		sleep $bgm_delay
 	fi
 	
-	(pgrep -x $MUSICPLAYER > /dev/null) && bgm_kill
+	(pgrep -x $LAUNCHER > /dev/null) && bgm_kill
 	
 	# start player (always)
-	start_player
+	./$BGMLAUNCHER/$LAUNCHER
 	
 	# check bgm_toggle, if 1 = play, else = stop
 	if [ "$bgm_toggle" -eq "1" ]; then
@@ -119,48 +126,33 @@ function bgm_init(){
 	
 }
 
-function start_player(){
-	case "$MUSICPLAYER" in
-		mpg123)
-			setsid $MUSICPLAYER -q -f $bgm_mp3volume -Z $BGMMUSICS/*.mp3 >/dev/null 2>&1 &
-			;;
-		vgmplay)
-			#m3u playlist generated automatically inside -autostart bgm_init
-			setsid $VGMPLAY/$MUSICPLAYER  $VGMPLAY/playlist.m3u >/dev/null 2>&1 &
-			;;
-		both)
-			#m3u playlist generated automatically inside -autostart bgm_init
-			setsid $BGM/$MUSICPLAYER >/dev/null 2>&1 &
-			;;
-		*)
-			exit
-			;;
-	esac
-}
-
 function generatelists(){
 	chmod -R a+rwx $BGMMUSICS/*.*
 	generatem3u
 	generatesequence
 }
 
+##generates, if no files found, do not create lists
 function generatem3u(){
-	
+		
 	types=("vgm" "vgz" "cmf" "dro")
 
 	for type in "${types[@]}"; do
-		find $BGMMUSICS -type f -iname "*.$type" >> $VGMPLAY/templist.m3u
+		find $BGMMUSICS -type f -iname "*.$type" >> $BGMVGMPLAYER/templist.m3u
 	done
-	cat $VGMPLAY/templist.m3u | shuf > $VGMPLAY/shuftemplist.m3u
-	for run in {1..10}; do cat $VGMPLAY/shuftemplist.m3u; done > $VGMPLAY/playlist.m3u
-	chmod -R a+rwx $VGMPLAY/*.m3u >/dev/null 2>&1
-	rm -f $VGMPLAY/templist.m3u $VGMPLAY/shuftemplist.m3u >/dev/null 2>&1
+	
+	if [ -s $BGMVGMPLAYER/templist.m3u ]; then
+	
+		cat $BGMVGMPLAYER/templist.m3u | shuf > $BGMVGMPLAYER/playlist.m3u
+		#for run in {1..10}; do cat $BGMVGMPLAYER/shuftemplist.m3u; done > $BGMVGMPLAYER/playlist.m3u
+		chmod -R a+rwx $BGMVGMPLAYER/*.m3u >/dev/null 2>&1
+		
+	fi
+	
+	rm -f $BGMVGMPLAYER/templist.m3u >/dev/null 2>&1
 
 }
-
 function generatesequence(){
-	
-	#echo "#!/bin/bash" > $BGM/bothlist
 	
 	types=("vgm" "vgz" "cmf" "dro" "mp3")
 	
@@ -168,19 +160,25 @@ function generatesequence(){
 		
 		case "$type" in
 			mp3)
-				find $BGMMUSICS -type f -iname "*.$type" | sed "s/.*/mpg123 -q -f $bgm_mp3volume -Z & >\/dev\/null 2>\&1/" >> $BGM/bothlist
+				find $BGMMUSICS -type f -iname "*.$type" | sed "s/.*/mpg123 -q -f $bgm_mp3volume -Z & >\/dev\/null 2>\&1/" >> $BGMBOTH/sequencelist
 				;;
 			*)
-				find $BGMMUSICS -type f -iname "*.$type" | sed "s/.*/bash \/home\/pi\/RetroPie-BGM-Player\/VGMPlay\/vgmplay &  >\/dev\/null 2>\&1/" >> $BGM/bothlist
+				find $BGMMUSICS -type f -iname "*.$type" | sed "s/.*/bash \/home\/pi\/RetroPie-BGM-Player\/bgm_launcher\/vgmplayer\/vgmplay &  >\/dev\/null 2>\&1/" >> $BGMBOTH/sequencelist
 				;;
 		esac
 	done
-	cat $BGM/bothlist | shuf > $BGM/shufbothlist
-	for run in {1..10}; do cat $BGM/shufbothlist; done > $BGM/both
-	chmod -R a+rwx $BGM/both $BGM/bothlist  $BGM/shufbothlist >/dev/null 2>&1
-	rm -f $BGM/bothlist $BGM/shufbothlist >/dev/null 2>&1
-	[ -s $BGM/both ] && sed -i "1i \#\!\/bin\/bash" $BGM/both || echo "#!/bin/bash" > $BGM/both
+	
+	if [ -s $BGMBOTH/sequencelist ]; then
+	
+		cat $BGMBOTH/sequencelist | shuf > $BGMBOTH/sequence
+		#for run in {1..10}; do cat $BGM/shufbothlist; done > $BGM/both
+		chmod -R a+rwx $BGMBOTH/sequencelist $BGMBOTH/sequence >/dev/null 2>&1
+		
+		sed -i "1i \#\!\/bin\/bash" $BGMBOTH/sequence
+	
+	fi
 
+	rm -f $BGMBOTH/sequencelist >/dev/null 2>&1
 }
 
 function bgm_play(){
@@ -278,30 +276,14 @@ function bgm_setvgmsetting(){
 # end of option menu related functions
 
 function pkillstop(){
-	if [ "$MUSICPLAYER" == "both" ]; then
-		bothid=$(pgrep both)
-		pkill -P -STOP $bothid
-	else
-		pkill -STOP $MUSICPLAYER
-	fi
+	pkill -P -STOP $LAUNCHERID >/dev/null 2>&1
 }
 function pkillcont(){
-	if [ "$MUSICPLAYER" == "both" ]; then
-		bothid=$(pgrep both)
-		pkill -P -CONT $bothid
-	else
-		pkill -CONT $MUSICPLAYER
-	fi
+	pkill -P -CONT $LAUNCHERID >/dev/null 2>&1
 }
 
 function bgm_kill(){
-	if [ "$MUSICPLAYER" == "both" ]; then
-		bothid=$(pgrep both)
-		kill -TERM -- -$bothid >/dev/null 2>&1
-	else
-		killall $MUSICPLAYER >/dev/null 2>&1
-	fi
-	
+	kill -SIGKILL -- -$LAUNCHERID >/dev/null 2>&1
 }
 
 function bgm_restart(){

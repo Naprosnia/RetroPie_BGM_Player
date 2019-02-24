@@ -3,9 +3,9 @@
 #Project		:	RetroPie_BGM_Player
 #Git			:	https://github.com/Naprosnia/RetroPie_BGM_Player
 #####################################################################
-#Script Name	:	bgm_control.sh
-#Date			:	20190218	(YYYYMMDD)
-#Description	:	BGM Player settings main menu.
+#Script Name	:	bgm_play.sh
+#Date			:	20190222	(YYYYMMDD)
+#Description	:	BGM Playe modes.
 #Usage			:	Should be called from RetroPie\ BGM\ Player.sh.
 #Author       	:	Luis Torres aka Naprosnia
 #####################################################################
