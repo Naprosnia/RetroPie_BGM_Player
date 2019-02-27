@@ -18,17 +18,20 @@ After the installation and the restart, music start playing when Emulation Stati
 * You don't like my music?! Easy for you, simply go to your roms folder, and inside you will find a new folder called "music", you can put there the musics you want. Attention, the audio files should be in .mp3 !
 
 ## Options
-* `BGM Volume` - Change BGM Player volume.
-* `BGM Toggle` - Set BGM Player ON/OFF.
-* `BGM Fade Effect` - This option enables the fading effect when music start or stop playing.
-* `BGM Non Stop` - This option keep BGM Player playing while you play games.
-* `BGM Delay` - Change the amount of seconds that you want to delay the BGM Player start when EmulationStation load.
+* `General Settings`
+ * `Player` - Change BGM player or select what file extensions you want to play.
+ * `Volume` - Change BGM Player volume.
+ * `Toggle` - Set BGM Player ON/OFF.
+* `Play Settings`
+ * `Fade Effect` - This option enables the fading effect when music start or stop playing.
+ * `Non Stop` - This option keep BGM Player playing while you play games.
+ * `Delay` - Change the amount of seconds that you want to delay the BGM Player start when EmulationStation load.
+* `Player Stuff`
+ * `Reload Audio Files` - If you add new songs/files, this option reload them, or restart your system to reload automatically.
 * `BGM Update` - Update RetroPie BGM Player
 
 ## Next Release Preview
-* Add support to emulated music with `VGMPlay` (*.vgm, *.vgz, *.cmf, *.dro)
-* Option menu related with `VGMPlay`
-* Ability to select which player to use (mp3 or emulated)
+* Add support to more file types.
 
 ## Video
 [![RetroPie BGM Player](https://img.youtube.com/vi/5G6uRU2iSRA/0.jpg)](https://www.youtube.com/watch?v=5G6uRU2iSRA)
