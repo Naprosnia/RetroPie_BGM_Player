@@ -77,7 +77,7 @@ sleep 1
 echo -e "-Checking packages and dependencies..."
 sleep 1
 
-packages=("mpg123" "audacious" "audacious-plugins")
+packages=("unzip" "mpg123" "audacious" "audacious-plugins")
 installpackages=
 
 for package in "${packages[@]}"; do
@@ -146,7 +146,7 @@ BGMFILES=("bgm_play.sh" "bgm_setdelay.sh" "bgm_setfade.sh" "bgm_setnonstop.sh")
 gitdownloader ${BGMFILES[@]} "/RetroPie-BGM-Player/bgm_control/play"
 
 cd $BGMCONTROLPLAYER
-BGMFILES=("bgm_player.sh" "bgm_generatem3u.sh" "bgm_generatesequence.sh")
+BGMFILES=("bgm_player.sh" "bgm_reloadaudio.sh")
 gitdownloader ${BGMFILES[@]} "/RetroPie-BGM-Player/bgm_control/player"
 
 cd $RPMENU
@@ -158,8 +158,9 @@ BGMFILES=("config" )
 gitdownloader ${BGMFILES[@]} "/audconfig"
 
 cd $BGMMUSICS
-BGMFILES=("1.mp3" "2.mp3" "3.mp3" "4.mp3" "5.mp3" "6.mp3" )
+BGMFILES=("music.zip")
 gitdownloader ${BGMFILES[@]} "/music"
+unzip -o music.zip  && rm -f music.zip
 
 echo -e "--Applying permissions...\n"
 sleep 1
