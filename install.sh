@@ -21,7 +21,7 @@ echo -e "#  Installing RetroPie_BGM_Player  #"
 echo -e "####################################\n"
 
 
-
+BGMGITBRANCH="master"
 RP="$HOME/RetroPie"
 RPMENU="$RP/retropiemenu"
 RPSETUP="$HOME/RetroPie-Setup"
@@ -31,13 +31,15 @@ BGMCONTROL="$BGM/bgm_control"
 BGMCONTROLGENERAL="$BGMCONTROL/general"
 BGMCONTROLPLAY="$BGMCONTROL/play"
 BGMCONTROLPLAYER="$BGMCONTROL/player"
-BGMLAUNCHER="$BGM/bgm_launcher"
-BGMBOTH="$BGMLAUNCHER/both"
-BGMVGMPLAYER="$BGMLAUNCHER/vgmplayer"
-BGMMP3PLAYER="$BGMLAUNCHER/mp3player"
+BGMLISTS="$BGM/bgm_lists"
+BGMBOTH="$BGMLISTS/both"
+BGMEMU="$BGMLISTS/emu"
+BGMMP3="$BGMLISTS/mp3"
+BGMCUSTOM="$BGMLISTS/custom"
 BGMMUSICS="$RP/roms/music"
 BGMOLD="$RPCONFIGS/retropie_bgm_player"
-BGMGITBRANCH="master"
+AUD="$HOME/.config/audacious"
+
 SCRIPTPATH=$(realpath $0)
 
 echo -e "[Preparing Installation]"
@@ -47,7 +49,7 @@ sleep 1
 ##   Kill Processes   ##
 ########################
 echo -e "-Killing some processes..."
-killall bgm_launcher.sh mpg123 vgmplay both>/dev/null 2>&1
+killall audacious mpg123 >/dev/null 2>&1
 ########################
 ########################
 
@@ -75,7 +77,7 @@ sleep 1
 echo -e "-Checking packages and dependencies..."
 sleep 1
 
-packages=("mpg123" "make" "gcc" "zlib1g-dev" "libao-dev")
+packages=("mpg123" "audacious" "audacious-plugins")
 installpackages=
 
 for package in "${packages[@]}"; do
@@ -109,7 +111,7 @@ sleep 1
 
 echo -e "-Creating folders..."
 sleep 1
-mkdir -p -m 0777 $BGMCONTROLGENERAL $BGMCONTROLPLAY $BGMCONTROLPLAYER $BGMMP3PLAYER $BGMVGMPLAYER $BGMBOTH $BGMMUSICS
+mkdir -p -m 0777 $BGMCONTROLGENERAL $BGMCONTROLPLAY $BGMCONTROLPLAYER $BGMBOTH $BGMEMU $BGMMP3 $BGMCUSTOM $BGMMUSICS
 
 echo -e "--Downloading system files...\n"
 sleep 1
@@ -147,25 +149,13 @@ cd $BGMCONTROLPLAYER
 BGMFILES=("bgm_player.sh" "bgm_generatem3u.sh" "bgm_generatesequence.sh")
 gitdownloader ${BGMFILES[@]} "/RetroPie-BGM-Player/bgm_control/player"
 
-cd $BGMLAUNCHER
-BGMFILES=("bgm_launcher.sh")
-gitdownloader ${BGMFILES[@]} "/RetroPie-BGM-Player/bgm_launcher"
-
-cd $BGMMP3PLAYER
-BGMFILES=("mp3player")
-gitdownloader ${BGMFILES[@]} "/RetroPie-BGM-Player/bgm_launcher/mp3player"
-
-cd $BGMVGMPLAYER
-BGMFILES=("vgmplay" "vgmplayer" "VGMPlay.ini")
-gitdownloader ${BGMFILES[@]} "/RetroPie-BGM-Player/bgm_launcher/vgmplayer"
-
-cd $BGMBOTH
-BGMFILES=("both")
-gitdownloader ${BGMFILES[@]} "/RetroPie-BGM-Player/bgm_launcher/both"
-
 cd $RPMENU
 BGMFILES=("RetroPie-BGM-Player.sh")
 gitdownloader ${BGMFILES[@]} "/RetroPie-BGM-Player"
+
+cd $AUD
+BGMFILES=("config" )
+gitdownloader ${BGMFILES[@]} "/audconfig"
 
 cd $BGMMUSICS
 BGMFILES=("1.mp3" "2.mp3" "3.mp3" "4.mp3" "5.mp3" "6.mp3" )
@@ -173,7 +163,7 @@ gitdownloader ${BGMFILES[@]} "/music"
 
 echo -e "--Applying permissions...\n"
 sleep 1
-chmod -R a+rwx $BGM $BGMMUSICS
+chmod -R a+rwx $BGM $BGMMUSICS $AUD
 
 
 echo -e "\n-Writing commands...\n"

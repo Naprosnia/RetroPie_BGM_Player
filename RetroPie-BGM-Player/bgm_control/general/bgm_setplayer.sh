@@ -34,16 +34,18 @@ function main_menu() {
     while true; do
 	
 		source $BGMSETTINGS >/dev/null 2>&1
-		[ "$bgm_player" == "mp3player" ] && mp3p="X" || mp3p=" "
-		[ "$bgm_player" == "vgmplayer" ] && vgmp="X"  || vgmp=" "
-		[ "$bgm_player" == "both" ] && bothp="X"  || bothp=" "
+		[ "$bgm_player" == "mp3" ] && mp3="X" || mp3=" "
+		[ "$bgm_player" == "emu" ] && emu="X"  || emu=" "
+		[ "$bgm_player" == "custom" ] && custom="X"  || custom=" "
+		[ "$bgm_player" == "both" ] && both="X"  || both=" "
 		
         choice=$(dialog --backtitle "RetroPie BGM Player v.$bgm_version" --title "Player Select" \
             --ok-label "Select" --cancel-label "Back" --no-tags --default-item "$bgm_player" \
             --menu "Select your Player" 25 75 20 \
-            "mp3player" "1 [$mp3p] MP3 Player" \
-			"vgmplayer" "2 [$vgmp] VGM Player" \
-			"both" "3 [$bothp] Both Players" \
+            "mp3" "1 [$mp3] MP3 Player" \
+			"emu" "2 [$emu] Game Music Emulator" \
+			"both" "3 [$both] Both Players" \
+			"custom" "4 [$custom] Custom File Types" \
             2>&1 > /dev/tty)
 
         opt=$?

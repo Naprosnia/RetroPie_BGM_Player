@@ -32,14 +32,11 @@ function execute() {
 			-setsetting)
 				bgm_setsetting "$2" "$3"
 				;;
-			-m3u)
-				generatem3u
+			-reload)
+				reloadaudiofiles
 				;;
-			-seq)
-				generatesequence
-				;;
-			-lists)
-				generatelists
+			-reloadc)
+				reloadcustom
 				;;
 			-r)
 				bgm_restart
@@ -66,17 +63,20 @@ BGM="$HOME/RetroPie-BGM-Player"
 BGMCONTROL="$BGM/bgm_control"
 BGMSETTINGS="$BGM/bgm_settings.ini"
 BGMMUSICS="$RP/roms/music"
-BGMLAUNCHER="$BGM/bgm_launcher"
+BGMLISTS="$BGM/bgm_lists"
+BGMBOTH="$BGMLISTS/both"
+BGMEMU="$BGMLISTS/emu"
+BGMMP3="$BGMLISTS/mp3"
+BGMCUSTOM="$BGMLISTS/custom"
 
+AUD="$HOME/.config/audacious"
+AUDSETTINGS="$AUD/config"
 
-LAUNCHER="bgm_launcher.sh"
-LAUNCHERID=$(pgrep $LAUNCHER)
+MUSICPLAYER="audacious"
 
-BGMBOTH="$BGMLAUNCHER/both"
-BGMVGMPLAYER="$BGMLAUNCHER/vgmplayer"
-BGMMP3PLAYER="$BGMLAUNCHER/mp3player"
+mp3files=("mp3")
+emufiles=("ay" "gbs" "gym" "hes" "kss" "nsf" "nsfe" "sap" "spc" "vgm" "vgz" "vtx" "2sf" "psf" "psf2")
 
-VGMPLAYSETTINGS="$BGMVGMPLAYER/VGMPlay.ini"
 
 # settings area
 source $BGMSETTINGS >/dev/null 2>&1
@@ -93,22 +93,19 @@ VOLUMERESET="amixer -q -M set $CHANNEL $CHANNELVOLUME%"
 FADEVOLUME=
 VOLUMESTEP=
 
-#convert volume for mp3player
-bgm_mp3volume=$(( 32768*$bgm_volume/100 ))
-
 function bgm_init(){
 
 	# if script called from autostart.sh, wait for omxplayer (splashscreen) to end
 	if [ "$1" == "--autostart" ]; then
 		while pgrep omxplayer >/dev/null; do sleep 1; done
-		generatelists
+		reloadaudiofiles
 		sleep $bgm_delay
 	fi
 	
-	(pgrep -x $LAUNCHER > /dev/null) && bgm_kill
+	(pgrep -x $MUSICPLAYER > /dev/null) && bgm_kill
 	
 	# start player (always)
-	./$BGMLAUNCHER/$LAUNCHER
+	[ -s $BGMLISTS/$bgm_player/$bgm_player.m3u ] && (setsid $MUSICPLAYER -H $BGMLISTS/$bgm_player/$bgm_player.m3u >/dev/null 2>&1 &)
 	
 	# check bgm_toggle, if 1 = play, else = stop
 	if [ "$bgm_toggle" -eq "1" ]; then
@@ -119,66 +116,49 @@ function bgm_init(){
 		fi
 		
 	else
-	
-		pkillstop
-		
+		pkillstop	
 	fi
 	
 }
 
-function generatelists(){
-	chmod -R a+rwx $BGMMUSICS/*.*
-	generatem3u
-	generatesequence
+function reloadaudiofiles(){
+	reloadmp3
+	reloademu
+	reloadboth
+	reloadcustom
 }
 
-##generates, if no files found, do not create lists
-function generatem3u(){
-		
-	types=("vgm" "vgz" "cmf" "dro")
-
-	for type in "${types[@]}"; do
-		find $BGMMUSICS -type f -iname "*.$type" >> $BGMVGMPLAYER/templist.m3u
-	done
+function reloader(){
 	
-	if [ -s $BGMVGMPLAYER/templist.m3u ]; then
+	chmod -R a+rwx $BGMMUSICS/*.* >/dev/null 2>&1
 	
-		cat $BGMVGMPLAYER/templist.m3u | shuf > $BGMVGMPLAYER/playlist.m3u
-		#for run in {1..10}; do cat $BGMVGMPLAYER/shuftemplist.m3u; done > $BGMVGMPLAYER/playlist.m3u
-		chmod -R a+rwx $BGMVGMPLAYER/*.m3u >/dev/null 2>&1
-		
-	fi
+	types=("$@")
+	((last_id=${#types[@]} - 1))
+	player=${types[last_id]}
+	unset types[last_id]
 	
-	rm -f $BGMVGMPLAYER/templist.m3u >/dev/null 2>&1
-
-}
-function generatesequence(){
-	
-	types=("vgm" "vgz" "cmf" "dro" "mp3")
+	rm -f $BGMLISTS/$player/$player.m3u >/dev/null 2>&1
 	
 	for type in "${types[@]}"; do
-		
-		case "$type" in
-			mp3)
-				find $BGMMUSICS -type f -iname "*.$type" | sed "s/.*/mpg123 -q -f $bgm_mp3volume -Z & >\/dev\/null 2>\&1/" >> $BGMBOTH/sequencelist
-				;;
-			*)
-				find $BGMMUSICS -type f -iname "*.$type" | sed "s/.*/bash \/home\/pi\/RetroPie-BGM-Player\/bgm_launcher\/vgmplayer\/vgmplay &  >\/dev\/null 2>\&1/" >> $BGMBOTH/sequencelist
-				;;
-		esac
+		find $BGMMUSICS -type f -iname "*.$type" >> $BGMLISTS/$player/$player.m3u
+		find $BGMMUSICS -type f -iname "*.${type^^}" >> $BGMLISTS/$player/$player.m3u
 	done
 	
-	if [ -s $BGMBOTH/sequencelist ]; then
-	
-		cat $BGMBOTH/sequencelist | shuf > $BGMBOTH/sequence
-		#for run in {1..10}; do cat $BGM/shufbothlist; done > $BGM/both
-		chmod -R a+rwx $BGMBOTH/sequencelist $BGMBOTH/sequence >/dev/null 2>&1
-		
-		sed -i "1i \#\!\/bin\/bash" $BGMBOTH/sequence
-	
-	fi
+	chmod -R a+rwx $BGMLISTS/$player/$player.m3u >/dev/null 2>&1
 
-	rm -f $BGMBOTH/sequencelist >/dev/null 2>&1
+}
+
+function reloadmp3(){
+	reloader ${mp3files[@]} "mp3"
+}
+function reloademu(){
+	reloader ${emufiles[@]} "emu"
+}
+function reloadboth(){
+	reloader ${mp3files[@]} ${emufiles[@]} "both"
+}
+function reloadcustom(){
+	reloader ${bgm_customplayer[@]} "custom"
 }
 
 function bgm_play(){
@@ -263,27 +243,26 @@ function vol_fade_out(){
 function bgm_setsetting(){
 	sed -i "s/^$1.*/$1=$2/g" $BGMSETTINGS
 	if [ "$1" == "bgm_volume" ]; then
-		vgm_volume=$(perl -E "say $2/100")
-		[ "$vgm_volume" == "1" ] && vgm_volume="1.0"
-		bgm_setvgmsetting "Volume" "$vgm_volume"
+		bgm_audaciousvolume "sw_volume_right" "$2"
+		bgm_audaciousvolume "sw_volume_left" "$2"
 	fi
 
 }
 
-function bgm_setvgmsetting(){
-	sed -i "s/^$1.*/$1 = $2/g" $VGMPLAYSETTINGS
+function bgm_audaciousvolume(){
+	sed -i "s/^$1.*/$1=$2/g" $AUDSETTINGS
 }
 # end of option menu related functions
 
 function pkillstop(){
-	pkill -P -STOP $LAUNCHERID >/dev/null 2>&1
+	pkill -STOP $MUSICPLAYER >/dev/null 2>&1
 }
 function pkillcont(){
-	pkill -P -CONT $LAUNCHERID >/dev/null 2>&1
+	pkill -CONT $MUSICPLAYER >/dev/null 2>&1
 }
 
 function bgm_kill(){
-	kill -SIGKILL -- -$LAUNCHERID >/dev/null 2>&1
+	killall $MUSICPLAYER >/dev/null 2>&1
 }
 
 function bgm_restart(){
