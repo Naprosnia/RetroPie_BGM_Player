@@ -5,7 +5,7 @@
 #Git			:	https://github.com/Naprosnia/RetroPie_BGM_Player
 #####################################################################
 #Script Name	:	install.sh
-#Date			:	20190224	(YYYYMMDD)
+#Date			:	20190227	(YYYYMMDD)
 #Description	:	The installation script.
 #Usage			:	wget -N https://raw.githubusercontent.com/Naprosnia/RetroPie_BGM_Player/master/install.sh
 #				:	chmod +x install.sh
@@ -21,7 +21,7 @@ echo -e "#  Installing RetroPie_BGM_Player  #"
 echo -e "####################################\n"
 
 
-BGMGITBRANCH="master"
+BGMGITBRANCH="dev"
 RP="$HOME/RetroPie"
 RPMENU="$RP/retropiemenu"
 RPSETUP="$HOME/RetroPie-Setup"
@@ -106,7 +106,7 @@ sleep 1
 ## Install BGM Player ##
 ########################
 
-echo -e "[Installing RetroPie BGM Player]"
+echo -e "[Installing RetroPie BGM Player v2]"
 sleep 1
 
 echo -e "-Creating folders..."
@@ -164,8 +164,8 @@ unzip -o music.zip  && rm -f music.zip
 
 echo -e "--Applying permissions...\n"
 sleep 1
-chmod -R a+rwx $BGM $BGMMUSICS $AUD
-
+chmod -R a+rwx $BGM $BGMMUSICS
+chmod 0444 $AUD/config
 
 echo -e "\n-Writing commands...\n"
 sleep 1
@@ -224,6 +224,5 @@ else
 	echo -e "\n"
 	(rm -f $SCRIPTPATH; sudo reboot)
 fi
-
 ########################
 ########################

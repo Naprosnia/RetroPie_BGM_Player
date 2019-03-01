@@ -30,7 +30,7 @@ function main_menu() {
             --menu "Settings" 25 75 20 \
 			"$BGMCONTROLGENERAL/bgm_general" "1 General Settings" \
 			"$BGMCONTROLPLAY/bgm_play" "2 Play Settings" \
-			"$BGMCONTROLPLAYER/bgm_player" "3 Player Settings" \
+			"$BGMCONTROLPLAYER/bgm_player" "3 Player Stuff" \
 			"$BGMCONTROL/bgm_updater" "4 BGM Update" \
             2>&1 > /dev/tty)
 		

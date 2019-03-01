@@ -4,7 +4,7 @@
 #Git			:	https://github.com/Naprosnia/RetroPie_BGM_Player
 #####################################################################
 #Script Name	:	bgm_system.sh
-#Date			:	20190224	(YYYYMMDD)
+#Date			:	20190227	(YYYYMMDD)
 #Description	:	This script contain all functions needed by BGM.
 #Usage			:	It should be called from other scripts using arguments.
 #Author       	:	Luis Torres aka Naprosnia
@@ -21,13 +21,13 @@ function execute() {
 
 		case "$1" in
 			-i)
-				(bgm_init "$2") &
+				(bgm_init "$2" &)
 				;;
 			-p)
 				bgm_play
 				;;
 			-s)
-				bgm_stop
+				(bgm_stop &)
 				;;
 			-setsetting)
 				bgm_setsetting "$2" "$3"
@@ -243,8 +243,12 @@ function vol_fade_out(){
 function bgm_setsetting(){
 	sed -i "s/^$1.*/$1=$2/g" $BGMSETTINGS
 	if [ "$1" == "bgm_volume" ]; then
+		chmod 0644 $AUDSETTINGS
+		sleep 0.2
 		bgm_audaciousvolume "sw_volume_right" "$2"
 		bgm_audaciousvolume "sw_volume_left" "$2"
+		sleep 0.2
+		chmod 0444 $AUDSETTINGS
 	fi
 
 }
