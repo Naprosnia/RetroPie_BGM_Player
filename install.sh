@@ -97,7 +97,7 @@ if [ ${#installpackages[@]} -gt 0 ]; then
 	sudo apt-get update; sudo apt-get install -y ${installpackages[@]}
 
 fi
-echo -e "/n--All packages and dependencies are installed."
+echo -e "/n --All packages and dependencies are installed."
 sleep 1
 ########################
 ########################
@@ -106,7 +106,7 @@ sleep 1
 ## Install BGM Player ##
 ########################
 
-echo -e "[Installing RetroPie BGM Player v2]"
+echo -e "/n[Installing RetroPie BGM Player v2]"
 sleep 1
 
 echo -e "-Creating folders..."

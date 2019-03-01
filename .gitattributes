@@ -1,4 +1,3 @@
 * text=auto
 * text eol=lf
-RetroPie-BGM-Player/VGMPlay/* binary
-RetroPie-BGM-Player/bgm_launcher/vgmplayer/vgmplay binary
+music/* binary
