@@ -29,10 +29,6 @@ Super Nintendo | .spc
 Sega VGM / VGZ | .vgm / .vgz
 Vortex | .vtx
 Playstation Audio | .psf / .psf2
-<<<<<<< HEAD
-=======
-
->>>>>>> cdf1fa06fcdee45140578472807443ec42a7bb00
 
 ## Options
 * `General Settings`
