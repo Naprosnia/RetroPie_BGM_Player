@@ -29,12 +29,13 @@ BGM="$HOME/RetroPie-BGM-Player"
 BGMMUSICS="$RP/roms/music"
 BGMOLD="$RPCONFIGS/retropie_bgm_player"
 SCRIPTPATH=$(realpath $0)
+MUSICPLAYER=("mpg123" "audacious")
 
 ########################
 ##    kill player     ##
 ########################
 echo -e "[Stopping Player]"
-killall $MUSICPLAYER >/dev/null 2>&1
+killall ${MUSICPLAYER[@]} >/dev/null 2>&1
 sleep 1
 ########################
 ########################
@@ -73,7 +74,7 @@ rm -rf $BGMMUSICS
 ########################
 echo -e "[Remove Music Player]\n"
 sleep 1
-sudo apt-get --purge remove -y $MUSICPLAYER
+sudo apt-get --purge remove -y ${MUSICPLAYER[@]}
 
 echo -e "\n[Removal finished.]\n"
 sleep 1
