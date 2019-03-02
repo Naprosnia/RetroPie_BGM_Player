@@ -28,6 +28,7 @@ RPCONFIGS="/opt/retropie/configs/all"
 BGM="$HOME/RetroPie-BGM-Player"
 BGMMUSICS="$RP/roms/music"
 BGMOLD="$RPCONFIGS/retropie_bgm_player"
+AUD="$HOME/.config/audacious"
 SCRIPTPATH=$(realpath $0)
 MUSICPLAYER=("mpg123" "audacious")
 
@@ -61,6 +62,7 @@ sed -i "/retropie_bgm_player\/bgm_init.sh/d" $RPCONFIGS/autostart.sh >/dev/null 
 echo -e "[Remove newer version]"
 sleep 1
 rm -rf $BGM
+rm -rf $AUD
 [ -e $RPMENU/RetroPie-BGM-Player.sh ] && rm -f $RPMENU/RetroPie-BGM-Player.sh
 sed -i "/bgm_system.sh/d" $RPCONFIGS/runcommand-onstart.sh >/dev/null 2>&1
 sed -i "/bgm_system.sh/d" $RPCONFIGS/runcommand-onend.sh >/dev/null 2>&1
