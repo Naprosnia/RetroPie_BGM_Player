@@ -4,7 +4,7 @@
 #Git			:	https://github.com/Naprosnia/RetroPie_BGM_Player
 #####################################################################
 #Script Name	:	bgm_udater
-#Date			:	20190218	(YYYYMMDD)
+#Date			:	20190302	(YYYYMMDD)
 #Description	:	BGM Player updater
 #Usage			:	Should be called from bgm_control.sh.
 #Author       	:	Luis Torres aka Naprosnia
@@ -14,7 +14,9 @@
 
 BGM="$HOME/RetroPie-BGM-Player"
 VERSION="$BGM/version.sh"
+BGMSETTINGS="$BGM/bgm_settings.ini"
 
+source $BGMSETTINGS >/dev/null 2>&1
 source $VERSION >/dev/null 2>&1
 
 GITVERSION="https://raw.githubusercontent.com/Naprosnia/RetroPie_BGM_Player/$bgm_gitbranch/RetroPie-BGM-Player/version.sh"
