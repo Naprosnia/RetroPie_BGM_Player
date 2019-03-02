@@ -14,8 +14,8 @@
 
 BGM="$HOME/RetroPie-BGM-Player"
 VERSION="$BGM/version.sh"
-GITVERSION="https://raw.githubusercontent.com/Naprosnia/RetroPie_BGM_Player/master/RetroPie-BGM-Player/version.sh"
-GITINSTALL="https://raw.githubusercontent.com/Naprosnia/RetroPie_BGM_Player/master/install.sh"
+GITVERSION="https://raw.githubusercontent.com/Naprosnia/RetroPie_BGM_Player/Version1/RetroPie-BGM-Player/version.sh"
+GITINSTALL="https://raw.githubusercontent.com/Naprosnia/RetroPie_BGM_Player/Version1/install.sh"
 
 source $VERSION >/dev/null 2>&1
 bgm_curversion=$bgm_version
