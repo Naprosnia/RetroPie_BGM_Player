@@ -15,11 +15,19 @@
 #Credits		:	crcerror : https://github.com/crcerror
 #####################################################################
 
-clear
-echo -e "####################################"
-echo -e "#  Installing RetroPie_BGM_Player  #"
-echo -e "####################################\n"
+GREEN='\033[0;32m'
+LGREEN='\033[1;32m'
+RED='\033[0;31m'
+LRED='\033[1;31m'
+BLUE='\033[0;34m'
+WHITE='\033[1;37m'
+ORANGE='\033[0;33m'
+NC='\033[0m'
 
+clear
+echo -e " ${LRED}####################################${NC}"
+echo -e " ${LRED}#${NC}  ${GREEN}Installing RetroPie_BGM_Player${NC}  ${LRED}#${NC}"
+echo -e " ${LRED}####################################${NC}\n"
 
 BGMGITBRANCH="dev"
 RP="$HOME/RetroPie"
@@ -42,13 +50,14 @@ AUD="$HOME/.config/audacious"
 
 SCRIPTPATH=$(realpath $0)
 
-echo -e "[Preparing Installation]"
+
+echo -e " ${LRED}[${NC}${LGREEN} Preparing Installation ${NC}${LRED}]${NC}"
 sleep 1
 
 ########################
 ##   Kill Processes   ##
 ########################
-echo -e "-Killing some processes..."
+echo -e " ${LRED}-${NC}${WHITE}Killing some processes...${NC}"
 killall audacious mpg123 >/dev/null 2>&1
 ########################
 ########################
@@ -56,9 +65,10 @@ killall audacious mpg123 >/dev/null 2>&1
 ########################
 ##remove older version##
 ########################
-echo -e "-Removing older versions..."
+echo -e " ${LRED}-${NC}${WHITE}Removing older versions...${NC}"
 rm -rf $BGMOLD
 rm -rf $BGM
+rm -rf $AUD
 [ -e $RPMENU/Background\ Music\ Settings.sh ] && rm -f $RPMENU/Background\ Music\ Settings.sh
 #use sudo because, owner can be root or file created incorrectly for any reason
 sudo chmod 777 $RPCONFIGS/runcommand-onstart.sh $RPCONFIGS/runcommand-onend.sh $RPCONFIGS/autostart.sh >/dev/null 2>&1
@@ -71,33 +81,32 @@ sed -i "/retropie_bgm_player\/bgm_init.sh/d" $RPCONFIGS/autostart.sh >/dev/null 
 #############################
 ##Packages and Dependencies##
 #############################
-echo -e "\n[Packages and Dependencies Installation]"
+echo -e "\n ${LRED}[${NC} ${LGREEN}Packages and Dependencies Installation${NC} ${LRED}]${NC}"
 sleep 1
 
-echo -e "-Checking packages and dependencies..."
+echo -e " ${LRED}-${NC}${WHITE}Checking packages and dependencies...${NC}"
 sleep 1
 
 packages=("unzip" "mpg123" "audacious" "audacious-plugins")
-installpackages=
 
 for package in "${packages[@]}"; do
 	if dpkg -s $package >/dev/null 2>&1; then
-		echo -e "--$package : Installed"
+		echo -e " ${LRED}--${NC}${WHITE}$package : ${NC}${LGREEN}Installed${NC}"
 	else
-		echo -e "--$package : Not Installed"
+		echo -e " ${LRED}--${NC}${WHITE}$package : ${NC}${LRED}Not Installed${NC}"
 		installpackages+=("$package")
 	fi
 done
 
 if [ ${#installpackages[@]} -gt 0 ]; then
 	
-	echo -e "---Installing missing packages and dependencies...\n"
+	echo -e " ${LRED}---${NC}${WHITE}Installing missing packages and dependencies...${NC}${ORANGE}\n"
 	sleep 1
 	
 	sudo apt-get update; sudo apt-get install -y ${installpackages[@]}
 
 fi
-echo -e "\n --All packages and dependencies are installed.\n"
+echo -e "\n ${NC}${LRED}--${NC}${GREEN}All packages and dependencies are installed.${NC}\n"
 sleep 1
 ########################
 ########################
@@ -106,14 +115,14 @@ sleep 1
 ## Install BGM Player ##
 ########################
 
-echo -e "[Installing RetroPie BGM Player v2]"
+echo -e " ${LRED}[${NC}${LGREEN} Installing RetroPie BGM Player v2 ${NC}${LRED}]${NC}"
 sleep 1
 
-echo -e "-Creating folders..."
+echo -e " ${LRED}-${NC}${WHITE}Creating folders...${NC}"
 sleep 1
 mkdir -p -m 0777 $BGMCONTROLGENERAL $BGMCONTROLPLAY $BGMCONTROLPLAYER $BGMBOTH $BGMEMU $BGMMP3 $BGMCUSTOM $BGMMUSICS $AUD
 
-echo -e "--Downloading system files...\n"
+echo -e " ${LRED}--${NC}${WHITE}Downloading system files...${NC}${ORANGE}\n"
 sleep 1
 
 function gitdownloader(){
@@ -162,16 +171,16 @@ BGMFILES=("music.zip")
 gitdownloader ${BGMFILES[@]} "/music"
 unzip -o music.zip  && rm -f music.zip
 
-echo -e "\n--Applying permissions..."
+echo -e "\n ${NC}${LRED}--${NC}${WHITE}Applying permissions...${NC}"
 sleep 1
 chmod -R a+rwx $BGM $BGMMUSICS
 chmod 0444 $AUD/config
 
-echo -e "-Writing commands...\n"
+echo -e " ${LRED}-${NC}${WHITE}Writing commands...${NC}\n"
 sleep 1
 
 cd $RPCONFIGS
-echo -e "--Writing on runcommand commands..."
+echo -e " ${LRED}--${NC}${WHITE}Writing on runcommand commands...${NC}"
 sleep 1
 function runcommandsetup(){
 
@@ -179,7 +188,7 @@ function runcommandsetup(){
 	command=$2
 
 	if [ ! -e $file ]; then
-			echo -e "---$file not found, creating..."
+			echo -e " ${LRED}---${NC}${WHITE}$file not found, creating...${NC}"
 			sleep 1
 			touch $file
 			sleep 0.5
@@ -187,7 +196,7 @@ function runcommandsetup(){
 			sleep 0.5
 			echo "$command" > $file
 		else
-			echo -e "---$file found, writing..."
+			echo -e " ${LRED}---${NC}${WHITE}$file found, writing...${NC}"
 			sleep 1
 			#use sudo because, owner can be root or file created incorrectly for any reason
 			sudo chmod 777 $file
@@ -199,7 +208,7 @@ function runcommandsetup(){
 runcommandsetup "runcommand-onstart.sh" "bash \$HOME/RetroPie-BGM-Player/bgm_system.sh -s"
 runcommandsetup "runcommand-onend.sh" "bash \$HOME/RetroPie-BGM-Player/bgm_system.sh -p"
 sleep 1
-echo -e "--Writing on autostart script..."
+echo -e " ${LRED}--${NC}${WHITE}Writing on autostart script...${NC}"
 sleep 1
 #use sudo because, owner can be root or file created incorrectly for any reason
 sudo chmod 777 autostart.sh
@@ -207,7 +216,7 @@ sed -i "/bgm_system.sh/d" autostart.sh
 sed -i "1 i bash \$HOME/RetroPie-BGM-Player/bgm_system.sh -i --autostart" autostart.sh
 sleep 1
 
-echo -e "\n[Instalation finished.]\n"
+echo -e "\n ${LRED}[${NC}${LGREEN} Installation Finished ${NC}${LRED}]${NC}\n"
 sleep 1
 ########################
 ########################
@@ -218,10 +227,10 @@ sleep 1
 if [ "$1" == "--update" ]; then
 	(rm -f $SCRIPTPATH; bash $BGMCONTROL/bgm_updater.sh --reboot)
 else
-	echo -e "[Restart System]"
-	echo -e "-To finish, we need to reboot.\n"
-	read -n 1 -s -r -p "Press any key to Restart.\n"
-	echo -e "\n"
+	echo -e " ${LRED}[${NC}${LGREEN} Restart System ${NC}${LRED}]${NC}"
+	echo -e " ${LRED}-${NC}${WHITE}To finish, we need to reboot.${NC}${ORANGE}\n"
+	read -n 1 -s -r -p "Press any key to Restart."
+	echo -e "${NC}\n"
 	(rm -f $SCRIPTPATH; sudo reboot)
 fi
 ########################
