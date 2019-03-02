@@ -33,6 +33,10 @@ Playstation Audio | .psf / .psf2
 ## Options
 * `General Settings`
   * `Player` - Change BGM player or select what file extensions you want to play.
+    * `MP3 Player`
+    * `Game Music Emulator`
+    * `Both Players`
+    * `Custom File Types`
   * `Volume` - Change BGM Player volume.
   * `Toggle` - Set BGM Player ON/OFF.
 * `Play Settings`
