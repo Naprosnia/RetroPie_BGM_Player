@@ -6,7 +6,7 @@ I made it simpler to install and created an options menu that can be launched fr
 Check out the [options](#options) avaliable!
 
 ## Installation
-1. `wget -N https://raw.githubusercontent.com/Naprosnia/RetroPie_BGM_Player/master/install.sh`
+1. `wget -N https://raw.githubusercontent.com/Naprosnia/RetroPie_BGM_Player/Version1/install.sh`
 2. `chmod +x install.sh`
 3. `bash install.sh`
 
