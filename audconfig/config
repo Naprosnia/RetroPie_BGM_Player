@@ -6,5 +6,5 @@ mixer-element=PCM
 repeat=TRUE
 shuffle=TRUE
 software_volume_control=TRUE
-sw_volume_left=100
-sw_volume_right=100
+sw_volume_left=50
+sw_volume_right=50

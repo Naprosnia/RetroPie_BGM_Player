@@ -71,7 +71,7 @@ sed -i "/retropie_bgm_player\/bgm_init.sh/d" $RPCONFIGS/autostart.sh >/dev/null 
 #############################
 ##Packages and Dependencies##
 #############################
-echo -e "[Packages and Dependencies Installation]"
+echo -e "\n[Packages and Dependencies Installation]"
 sleep 1
 
 echo -e "-Checking packages and dependencies..."
@@ -91,13 +91,13 @@ done
 
 if [ ${#installpackages[@]} -gt 0 ]; then
 	
-	echo -e "---Installing missing packages and dependencies.../n"
+	echo -e "---Installing missing packages and dependencies...\n"
 	sleep 1
 	
 	sudo apt-get update; sudo apt-get install -y ${installpackages[@]}
 
 fi
-echo -e "/n --All packages and dependencies are installed."
+echo -e "\n --All packages and dependencies are installed.\n"
 sleep 1
 ########################
 ########################
@@ -106,7 +106,7 @@ sleep 1
 ## Install BGM Player ##
 ########################
 
-echo -e "/n[Installing RetroPie BGM Player v2]"
+echo -e "[Installing RetroPie BGM Player v2]"
 sleep 1
 
 echo -e "-Creating folders..."
@@ -162,12 +162,12 @@ BGMFILES=("music.zip")
 gitdownloader ${BGMFILES[@]} "/music"
 unzip -o music.zip  && rm -f music.zip
 
-echo -e "--Applying permissions...\n"
+echo -e "\n--Applying permissions..."
 sleep 1
 chmod -R a+rwx $BGM $BGMMUSICS
 chmod 0444 $AUD/config
 
-echo -e "\n-Writing commands...\n"
+echo -e "-Writing commands...\n"
 sleep 1
 
 cd $RPCONFIGS
@@ -220,7 +220,7 @@ if [ "$1" == "--update" ]; then
 else
 	echo -e "[Restart System]"
 	echo -e "-To finish, we need to reboot.\n"
-	read -n 1 -s -r -p "Press any key to Restart."
+	read -n 1 -s -r -p "Press any key to Restart.\n"
 	echo -e "\n"
 	(rm -f $SCRIPTPATH; sudo reboot)
 fi
