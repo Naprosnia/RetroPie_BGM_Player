@@ -141,7 +141,6 @@ function reloader(){
 	
 	for type in "${types[@]}"; do
 		find $BGMMUSICS -type f -iname "*.$type" >> $BGMLISTS/$player/$player.m3u
-		find $BGMMUSICS -type f -iname "*.${type^^}" >> $BGMLISTS/$player/$player.m3u
 	done
 	
 	chmod -R a+rwx $BGMLISTS/$player/$player.m3u >/dev/null 2>&1

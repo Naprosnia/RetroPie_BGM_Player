@@ -15,6 +15,8 @@
 BGM="$HOME/RetroPie-BGM-Player"
 BGMSETTINGS="$BGM/bgm_settings.ini"
 VERSION="$BGM/version.sh"
+BGMCONTROL="$BGM/bgm_control"
+BGMCONTROLGENERAL="$BGMCONTROL/general"
 source $VERSION >/dev/null 2>&1
 
 function description() {
@@ -51,8 +53,12 @@ function main_menu() {
         opt=$?
 		[ $opt -eq 1 ] && exit
 		
-		bash $BGM/bgm_system.sh -setsetting bgm_player $choice
-		bash $BGM/bgm_system.sh -i
+		if [ $choice == "custom" ]; then
+			bash $BGMCONTROLGENERAL/bgm_setplayercustom.sh
+		else
+			bash $BGM/bgm_system.sh -setsetting bgm_player $choice
+			bash $BGM/bgm_system.sh -i
+		fi
 		
     done
 }

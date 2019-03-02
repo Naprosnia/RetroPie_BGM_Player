@@ -12,11 +12,12 @@
 #Credits		:	crcerror : https://github.com/crcerror
 #####################################################################
 
+BGMGITBRANCH="dev"
 BGM="$HOME/RetroPie-BGM-Player"
 VERSION="$BGM/version.sh"
 source $VERSION >/dev/null 2>&1
-GITVERSION="https://raw.githubusercontent.com/Naprosnia/RetroPie_BGM_Player/$bgm_gitbranch/RetroPie-BGM-Player/version.sh"
-GITINSTALL="https://raw.githubusercontent.com/Naprosnia/RetroPie_BGM_Player/$bgm_gitbranch/install.sh"
+GITVERSION="https://raw.githubusercontent.com/Naprosnia/RetroPie_BGM_Player/$BGMGITBRANCH/RetroPie-BGM-Player/version.sh"
+GITINSTALL="https://raw.githubusercontent.com/Naprosnia/RetroPie_BGM_Player/$BGMGITBRANCH/install.sh"
 
 bgm_curversion=$bgm_version
 bgm_curdate=$bgm_date

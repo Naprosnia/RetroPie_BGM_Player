@@ -57,7 +57,7 @@ sleep 1
 ########################
 ##   Kill Processes   ##
 ########################
-echo -e " ${LRED}-${NC}${WHITE}Killing some processes...${NC}"
+echo -e " ${LRED}-${NC}${WHITE} Killing some processes...${NC}"
 killall audacious mpg123 >/dev/null 2>&1
 ########################
 ########################
@@ -65,7 +65,7 @@ killall audacious mpg123 >/dev/null 2>&1
 ########################
 ##remove older version##
 ########################
-echo -e " ${LRED}-${NC}${WHITE}Removing older versions...${NC}"
+echo -e " ${LRED}-${NC}${WHITE} Removing older versions...${NC}"
 rm -rf $BGMOLD
 rm -rf $BGM
 rm -rf $AUD
@@ -84,29 +84,29 @@ sed -i "/retropie_bgm_player\/bgm_init.sh/d" $RPCONFIGS/autostart.sh >/dev/null 
 echo -e "\n ${LRED}[${NC} ${LGREEN}Packages and Dependencies Installation${NC} ${LRED}]${NC}"
 sleep 1
 
-echo -e " ${LRED}-${NC}${WHITE}Checking packages and dependencies...${NC}"
+echo -e " ${LRED}-${NC}${WHITE} Checking packages and dependencies...${NC}"
 sleep 1
 
 packages=("unzip" "mpg123" "audacious" "audacious-plugins")
 
 for package in "${packages[@]}"; do
 	if dpkg -s $package >/dev/null 2>&1; then
-		echo -e " ${LRED}--${NC}${WHITE}$package : ${NC}${LGREEN}Installed${NC}"
+		echo -e " ${LRED}--${NC}${WHITE} $package : ${NC}${LGREEN}Installed${NC}"
 	else
-		echo -e " ${LRED}--${NC}${WHITE}$package : ${NC}${LRED}Not Installed${NC}"
+		echo -e " ${LRED}--${NC}${WHITE} $package : ${NC}${LRED}Not Installed${NC}"
 		installpackages+=("$package")
 	fi
 done
 
 if [ ${#installpackages[@]} -gt 0 ]; then
 	
-	echo -e " ${LRED}---${NC}${WHITE}Installing missing packages and dependencies...${NC}${ORANGE}\n"
+	echo -e " ${LRED}---${NC}${WHITE} Installing missing packages and dependencies...${NC}${ORANGE}\n"
 	sleep 1
 	
 	sudo apt-get update; sudo apt-get install -y ${installpackages[@]}
 
 fi
-echo -e "\n ${NC}${LRED}--${NC}${GREEN}All packages and dependencies are installed.${NC}\n"
+echo -e "\n ${NC}${LRED}--${NC}${GREEN} All packages and dependencies are installed.${NC}\n"
 sleep 1
 ########################
 ########################
@@ -118,11 +118,11 @@ sleep 1
 echo -e " ${LRED}[${NC}${LGREEN} Installing RetroPie BGM Player v2 ${NC}${LRED}]${NC}"
 sleep 1
 
-echo -e " ${LRED}-${NC}${WHITE}Creating folders...${NC}"
+echo -e " ${LRED}-${NC}${WHITE} Creating folders...${NC}"
 sleep 1
 mkdir -p -m 0777 $BGMCONTROLGENERAL $BGMCONTROLPLAY $BGMCONTROLPLAYER $BGMBOTH $BGMEMU $BGMMP3 $BGMCUSTOM $BGMMUSICS $AUD
 
-echo -e " ${LRED}--${NC}${WHITE}Downloading system files...${NC}${ORANGE}\n"
+echo -e " ${LRED}--${NC}${WHITE} Downloading system files...${NC}${ORANGE}\n"
 sleep 1
 
 function gitdownloader(){
@@ -147,7 +147,7 @@ BGMFILES=("bgm_updater.sh")
 gitdownloader ${BGMFILES[@]} "/RetroPie-BGM-Player/bgm_control"
 
 cd $BGMCONTROLGENERAL
-BGMFILES=("bgm_general.sh" "bgm_setplayer.sh" "bgm_settoggle.sh" "bgm_setvolume.sh")
+BGMFILES=("bgm_general.sh" "bgm_setplayer.sh" "bgm_settoggle.sh" "bgm_setvolume.sh" "bgm_setplayercustom.sh")
 gitdownloader ${BGMFILES[@]} "/RetroPie-BGM-Player/bgm_control/general"
 
 cd $BGMCONTROLPLAY
@@ -171,16 +171,16 @@ BGMFILES=("music.zip")
 gitdownloader ${BGMFILES[@]} "/music"
 unzip -o music.zip  && rm -f music.zip
 
-echo -e "\n ${NC}${LRED}--${NC}${WHITE}Applying permissions...${NC}"
+echo -e "\n ${NC}${LRED}--${NC}${WHITE} Applying permissions...${NC}"
 sleep 1
 chmod -R a+rwx $BGM $BGMMUSICS
 chmod 0444 $AUD/config
 
-echo -e " ${LRED}-${NC}${WHITE}Writing commands...${NC}\n"
+echo -e " ${LRED}-${NC}${WHITE} Writing commands...${NC}\n"
 sleep 1
 
 cd $RPCONFIGS
-echo -e " ${LRED}--${NC}${WHITE}Writing on runcommand commands...${NC}"
+echo -e " ${LRED}--${NC}${WHITE} Writing on runcommand commands...${NC}"
 sleep 1
 function runcommandsetup(){
 
@@ -188,7 +188,7 @@ function runcommandsetup(){
 	command=$2
 
 	if [ ! -e $file ]; then
-			echo -e " ${LRED}---${NC}${WHITE}$file not found, creating...${NC}"
+			echo -e " ${LRED}---${NC}${WHITE} $file not found, creating...${NC}"
 			sleep 1
 			touch $file
 			sleep 0.5
@@ -196,7 +196,7 @@ function runcommandsetup(){
 			sleep 0.5
 			echo "$command" > $file
 		else
-			echo -e " ${LRED}---${NC}${WHITE}$file found, writing...${NC}"
+			echo -e " ${LRED}---${NC}${WHITE} $file found, writing...${NC}"
 			sleep 1
 			#use sudo because, owner can be root or file created incorrectly for any reason
 			sudo chmod 777 $file
@@ -208,7 +208,7 @@ function runcommandsetup(){
 runcommandsetup "runcommand-onstart.sh" "bash \$HOME/RetroPie-BGM-Player/bgm_system.sh -s"
 runcommandsetup "runcommand-onend.sh" "bash \$HOME/RetroPie-BGM-Player/bgm_system.sh -p"
 sleep 1
-echo -e " ${LRED}--${NC}${WHITE}Writing on autostart script...${NC}"
+echo -e " ${LRED}--${NC}${WHITE} Writing on autostart script...${NC}"
 sleep 1
 #use sudo because, owner can be root or file created incorrectly for any reason
 sudo chmod 777 autostart.sh
@@ -228,8 +228,8 @@ if [ "$1" == "--update" ]; then
 	(rm -f $SCRIPTPATH; bash $BGMCONTROL/bgm_updater.sh --reboot)
 else
 	echo -e " ${LRED}[${NC}${LGREEN} Restart System ${NC}${LRED}]${NC}"
-	echo -e " ${LRED}-${NC}${WHITE}To finish, we need to reboot.${NC}${ORANGE}\n"
-	read -n 1 -s -r -p "Press any key to Restart."
+	echo -e " ${LRED}-${NC}${WHITE} To finish, we need to reboot.${NC}${ORANGE}\n"
+	read -n 1 -s -r -p " Press any key to Restart."
 	echo -e "${NC}\n"
 	(rm -f $SCRIPTPATH; sudo reboot)
 fi

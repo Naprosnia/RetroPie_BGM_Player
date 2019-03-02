@@ -17,37 +17,37 @@ BGMSETTINGS="$BGM/bgm_settings.ini"
 VERSION="$BGM/version.sh"
 source $VERSION >/dev/null 2>&1
 filetypes=("mp3" "ay" "gbs" "gym" "hes" "kss" "nsf" "nsfe" "sap" "spc" "vgm" "vgz" "vtx" "2sf" "psf" "psf2")
-bgm_customplayer=
 
 function main_menu() {
     local choice
 
     while true; do
 	
+		unset bgm_customplayer
 		source $BGMSETTINGS >/dev/null 2>&1
-		
+
 		for filetype in "${filetypes[@]}"; do
-			checkarray ${bgm_customplayer[@]} $filetype && declare $filetype="X" ||  declare $filetype=" "
+			checkarray ${bgm_customplayer[@]} $filetype && declare ft_$filetype="X" ||  declare ft_$filetype=" "
 		done
         choice=$(dialog --backtitle "RetroPie BGM Player v.$bgm_version" --title "Custom File Type Player" \
-            --ok-label "Select" --cancel-label "Back" --no-tags \
+            --ok-label "Select" --cancel-label "Back" --no-tags  --default-item "$choice" \
             --menu "Select your Player" 25 75 20 \
-            "mp3" " [$mp3] MP3" \
-			"ay" " [$ay] Spectrum ZX (.ay)" \
-			"gbs" " [$gbs] GameBoy (.gbs)" \
-			"gym" " [$gym] Sega Genesis (.gym)" \
-			"hes" " [$hes] NEC PC Engine / TurboGrafx-16 (.hes)" \
-			"kss" " [$kss] MSX / Other Z80 (.kss)" \
-			"nsf" " [$nsf] NES (.nsf)" \
-			"nsfe" " [$nsfe] NES Extended Support (.nsfe)" \
-			"sap" " [$sap] Atari SAP (.sap)" \
-			"spc" " [$spc] SNES (.spc)" \
-			"vgm" " [$vgm] Sega VGM (.vgm)" \
-			"vgz" " [$vgz] Sega VGZ (.vgz)" \
-			"vtx" " [$vtx]  Vortex (.vtx)" \
-			"2sf" " [$2sf] Nintendo DS (.2sf)" \
-			"psf" " [$psf] Playstation Audio (.psf)" \
-			"psf2" " [$psf2] Playstation Audio (.psf2)" \
+            "mp3" " [$ft_mp3] MP3" \
+			"ay" " [$ft_ay] Spectrum ZX (.ay)" \
+			"gbs" " [$ft_gbs] GameBoy (.gbs)" \
+			"gym" " [$ft_gym] Sega Genesis (.gym)" \
+			"hes" " [$ft_hes] NEC PC Engine / TurboGrafx-16 (.hes)" \
+			"kss" " [$ft_kss] MSX / Other Z80 (.kss)" \
+			"nsf" " [$ft_nsf] NES (.nsf)" \
+			"nsfe" " [$ft_nsfe] NES Extended Support (.nsfe)" \
+			"sap" " [$ft_sap] Atari SAP (.sap)" \
+			"spc" " [$ft_spc] SNES (.spc)" \
+			"2sf" " [$ft_2sf] Nintendo DS (.2sf)" \
+			"vgm" " [$ft_vgm] Sega VGM (.vgm)" \
+			"vgz" " [$ft_vgz] Sega VGZ (.vgz)" \
+			"vtx" " [$ft_vtx] Vortex (.vtx)" \
+			"psf" " [$ft_psf] Playstation Audio (.psf)" \
+			"psf2" " [$ft_psf2] Playstation Audio (.psf2)" \
             2>&1 > /dev/tty)
 
         opt=$?
@@ -60,7 +60,6 @@ function main_menu() {
 			fi
 			exit
 		fi
-		
 		managearray $choice
 		
     done
@@ -83,11 +82,13 @@ function checkarray(){
 }
 
 function managearray(){
-	type=$1
-	if [ "${!type}" == "X" ]; then
-		sed -i "/bgm_customplayer+=(\"$type\")/d" $BGMSETTINGS
+	ext=$1
+	ft_ext="ft_$ext"
+	
+	if [ "${!ft_ext}" == "X" ]; then
+		sed -i "/bgm_customplayer+=(\"$ext\")/d" $BGMSETTINGS
 	else
-		echo "bgm_customplayer+=(\"$type\")" >> $BGMSETTINGS
+		echo "bgm_customplayer+=(\"$ext\")" >> $BGMSETTINGS
 	fi
 }
 
