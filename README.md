@@ -34,7 +34,7 @@ After the installation and the restart, music start playing when Emulation Stati
 [![RetroPie BGM Player](https://img.youtube.com/vi/5G6uRU2iSRA/0.jpg)](https://www.youtube.com/watch?v=5G6uRU2iSRA)
 
 ## Uninstall
-1. `wget -N https://raw.githubusercontent.com/Naprosnia/RetroPie_BGM_Player/master/uninstall.sh`
+1. `wget -N https://raw.githubusercontent.com/Naprosnia/RetroPie_BGM_Player/Version1/uninstall.sh`
 2. `chmod +x uninstall.sh`
 3. `bash uninstall.sh`
 
