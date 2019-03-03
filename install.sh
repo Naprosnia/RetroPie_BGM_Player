@@ -176,7 +176,7 @@ sleep 1
 chmod -R a+rwx $BGM $BGMMUSICS
 chmod 0444 $AUD/config
 
-echo -e " ${LRED}-${NC}${WHITE} Writing commands...${NC}\n"
+echo -e " ${LRED}-${NC}${WHITE} Writing commands...${NC}"
 sleep 1
 
 cd $RPCONFIGS
