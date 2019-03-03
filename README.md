@@ -1,4 +1,4 @@
-# RetroPie BGM Player v2
+# RetroPie BGM Player v2.0
 A simple background music player with emulation support, to implement on RetroPie and Emulation Station based on [this](https://retropie.org.uk/forum/topic/9133/quick-and-easy-guide-for-adding-music-to-emulatonstation-on-retropie-noob-friendly) guide from RetroPie forum.
 
 ## Installation
