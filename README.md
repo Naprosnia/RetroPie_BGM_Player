@@ -51,12 +51,12 @@ Playstation Audio | .psf / .psf2
 * Add support to more file types.
 
 ## Video
-[![RetroPie BGM Player](https://img.youtube.com/vi/5G6uRU2iSRA/0.jpg)](https://www.youtube.com/watch?v=5G6uRU2iSRA)
+[![RetroPie BGM Player](https://img.youtube.com/vi/CP-Kz6OAueM/0.jpg)](https://www.youtube.com/watch?v=CP-Kz6OAueM)
 
 ## Uninstall
 1. `wget -N https://raw.githubusercontent.com/Naprosnia/RetroPie_BGM_Player/master/uninstall.sh`
 2. `chmod +x uninstall.sh`
-3. `bash uninstall.sh`
+3. `./uninstall.sh`
 
 ## Donate
 You want to buy me a burger? Click the button below.
