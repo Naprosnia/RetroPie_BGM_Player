@@ -118,6 +118,10 @@ sleep 1
 echo -e " ${LRED}[${NC}${LGREEN} Installing RetroPie BGM Player v2 ${NC}${LRED}]${NC}"
 sleep 1
 
+echo -e " ${LRED}-${NC}${WHITE} Change some permissions...${NC}"
+sleep 1
+sudo chmod -R 777 $RPCONFIGS
+
 echo -e " ${LRED}-${NC}${WHITE} Creating folders...${NC}"
 sleep 1
 mkdir -p -m 0777 $BGMCONTROLGENERAL $BGMCONTROLPLAY $BGMCONTROLPLAYER $BGMBOTH $BGMEMU $BGMMP3 $BGMCUSTOM $BGMMUSICS $AUD
